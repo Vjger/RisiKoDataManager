@@ -1,0 +1,230 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>it.desimone</groupId>
+  <artifactId>RisiKoDataManager</artifactId>
+  <version>1.8</version>
+  <packaging>jar</packaging>
+
+  <name>RisiKoDataManager</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.output>${user.home}\Desktop\RisiKoDataManager ${version}</project.output>
+  </properties>
+
+	<build> 
+		<finalName>${project.artifactId}</finalName>
+		
+		<plugins>
+		
+		  <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <excludes>
+            <exclude>it/desimone/risiko/torneo/batch/ExcelAccessHSSF.java</exclude>
+          </excludes>
+          </configuration>
+        </plugin>
+		
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-dependency-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>copy-dependencies</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>copy-dependencies</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>
+			                    ${project.build.directory}/libs
+			                </outputDirectory>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+			
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-jar-plugin</artifactId>
+			    <configuration>
+			        <archive>
+			            <manifest>
+			                <addClasspath>true</addClasspath>
+			                <classpathPrefix>libs/</classpathPrefix>
+			                <mainClass>
+			                    it.desimone.gsheetsaccess.ui.RisiKoDataManager
+			                </mainClass>
+			            </manifest>
+			        </archive>
+			    </configuration>
+			</plugin>
+	
+			<plugin>
+		        <artifactId>maven-resources-plugin</artifactId>
+		        <version>3.0.2</version>
+		        <executions> 	        
+		          <execution>
+		            <id>copy-resources</id>
+            
+		            <phase>install</phase>
+		            <goals>
+		              <goal>copy-resources</goal>
+		            </goals>
+		            <configuration>
+		               <includeEmptyDirs>true</includeEmptyDirs>
+		              <outputDirectory>${project.output}</outputDirectory>
+		              <resources>          
+		                <resource>
+		                  <directory>/</directory>
+		                  <includes>
+		                  	<include>resources/</include>
+		                  	<include>configuration/</include>
+		                    <include>working/</include>
+		                  </includes>
+		                  <excludes>
+		                  <!-- 
+		                  	<exclude>resources/*.png</exclude>
+		                 	-->
+		                  	<exclude>resources/*.pdf</exclude>
+		                  	<exclude>resources/*.xls</exclude>
+		                  	<exclude>resources/*.gitignore</exclude>
+		                  	<exclude>resources/google/.credentials/</exclude>
+		                  </excludes>
+		                  <filtering>false</filtering>
+		                </resource>
+		                <resource>
+		                  <directory>target/</directory>
+		                  <includes>
+		                  	<include>libs/</include>
+		                  	<include>*.jar</include>
+		                  </includes>
+		                  <filtering>false</filtering>
+		                </resource>
+		                <resource>
+		                  <directory>scripts/</directory>
+		                  <filtering>false</filtering>
+		                </resource>		                
+		              </resources>              
+		            </configuration>            
+		          </execution>
+		        </executions>
+		     </plugin>
+		     
+			<plugin>
+			    <artifactId>maven-antrun-plugin</artifactId>
+			    <version>1.8</version>
+			    <executions>
+			        <execution>
+			            <phase>initialize</phase>
+			            <configuration>
+			                <target>
+								<echo message="Creating working directories..."/>
+			                    <mkdir dir="${project.output}/working" />
+			               		<mkdir dir="${project.output}/working/tmp" />
+			               		<mkdir dir="${project.output}/working/done" />
+			               		<mkdir dir="${project.output}/working/error" />
+			               		<mkdir dir="${project.output}/working/htmlpages" />
+			               		<mkdir dir="${project.output}/working/htmlpages/TORNEI" />
+			               		<mkdir dir="${project.output}/working/htmlpages/TABELLINI_CLUB" />
+			               		<mkdir dir="${project.output}/working/htmlpublisher" />
+			                </target>
+			            </configuration>
+			            <goals>
+			                <goal>run</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>		     
+		</plugins>
+	</build>
+	
+
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  
+  <dependency>
+     <groupId>com.google.api-client</groupId>
+     <artifactId>google-api-client</artifactId>
+     <version>1.23.0</version>
+   </dependency>    
+   <dependency>
+     <groupId>com.google.oauth-client</groupId>
+     <artifactId>google-oauth-client-jetty</artifactId>
+     <version>1.23.0</version>
+   </dependency> 
+
+   <dependency>
+     <groupId>com.google.apis</groupId>
+     <artifactId>google-api-services-sheets</artifactId>
+     <version>v4-rev499-1.23.0</version>
+   </dependency> 
+
+	 <dependency>
+	    <groupId>com.google.apis</groupId>
+	    <artifactId>google-api-services-drive</artifactId>
+	    <version>v3-rev90-1.23.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.google.apis</groupId>
+	    <artifactId>google-api-services-gmail</artifactId>
+	    <version>v1-rev82-1.23.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>javax.mail</groupId>
+	    <artifactId>mail</artifactId>
+	    <version>1.4</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>org.apache.velocity</groupId>
+	  <artifactId>velocity-engine-core</artifactId>
+	  <version>2.1</version>
+	</dependency>	
+	
+	<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>1.2.17</version>
+</dependency>
+
+<dependency>
+    <groupId>com.thoughtworks.xstream</groupId>
+    <artifactId>xstream</artifactId>
+    <version>1.4.11.1</version>
+</dependency>
+	
+	    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.7.28</version>
+    </dependency>
+	
+	 <dependency>
+	 	<groupId>it.desimone</groupId>
+	 	<artifactId>GestioneTorneo</artifactId>
+	 	<version>2.3.6</version>
+	 </dependency>
+	 
+	 <dependency>
+	 	<groupId>it.desimone</groupId>
+	 	<artifactId>FtpUtility</artifactId>
+	 	<version>1.0.1</version>
+	 </dependency>
+  </dependencies>  
+</project>

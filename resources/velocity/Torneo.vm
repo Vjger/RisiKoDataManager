@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>$torneo.torneoRow.tipoTorneo organizzato da $torneo.torneoRow.organizzatore il $torneo.torneoRow.startDate</title>
+
+	<meta charset="UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="../image/png" href="images/icons/rosso_45px.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../css/util.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiterTorneo">
+		<div class="container-table100">
+			<table>
+			<tr><td> <!-- riga intestazione -->
+			<table class="table10 ver1" style="$styleGenerator.getStyle($torneo.torneoRow.tipoTorneo); width="98%"">
+				<tr>
+					<td rowspan="2"><a href="../index.html"><img src="../images/icons/home.png"></a></td>
+					<td>$torneo.torneoRow.tipoTorneo - $torneo.torneoRow.nomeTorneo</td>
+					<td rowspan="2"><img src="../images/loghi/rcu/loghi100px_vert/${torneo.torneoRow.organizzatore}.png" title="$torneo.torneoRow.organizzatore" alt="$torneo.torneoRow.organizzatore"></td>					
+				</tr>
+				<tr>
+					<td>Dal $torneo.torneoRow.startDate al $torneo.torneoRow.endDate - Turni: $torneo.torneoRow.numeroTurni - Partecipanti: $torneo.torneoRow.numeroPartecipanti</td>
+				</tr>
+			</table>
+			</td></tr>		
+			<tr><td> <!-- riga partite -->
+			<div class="wrap-220">
+				<table> <!-- tabella turni -->
+				#set( $numeroTrn = 0)
+				#set( $counterPartite = 0)
+				#foreach( $partita in $torneo.partite )
+					#if ($partita.numeroTurno != $numeroTrn)
+						#set( $counterPartite = 0)
+						#if ($numeroTrn != 0)
+						</tr></table></div> <!-- chiusura tabella partite -->
+						</td>
+						</tr>  <!-- chiusura riga turno -->
+						<tr>
+						<td style="padding-top: 25px;"> <!-- apertura nuovo turno -->
+						<!-- Inizio tabella partite -->
+						<div class="table10 ver1">Turno $partita.numeroTurno - $partita.dataTurno</div>
+						<div style="padding: 5px;">
+						<table><tr>
+						#else
+						<tr><td style="padding-top: 25px;"> <!-- primo turno -->
+						<!-- Inizio tabella partite -->
+						<div class="table10 ver1">Turno $partita.numeroTurno - $partita.dataTurno</div>
+						<div style="padding: 5px;">
+						<table><tr>
+						#end
+						#set ( $numeroTrn = $partita.numeroTurno)
+					#end
+					#set ( $counterPartite = $counterPartite + 1)
+					#if ($counterPartite % 5 == 0)
+						#set( $counterPartite = 1)
+							</tr> <!-- chiusura riga tabella partite -->
+						<!-- Inizio riga tabella partite -->
+						<tr>
+					#end
+					<td>
+					#parse("TavoloTorneo.vm")
+					</td>
+				#end
+				</tr></table></div> <!-- chiusura tabella partite -->
+				</td>
+				</tr></table>
+			</div>
+			</td></tr>		
+			#if($torneo.classifica)
+				<tr><td> <!-- riga classifica -->
+				<div class="wrap-220" style="width: 1000px">
+					#parse("ClassificaTorneo.vm")
+				</div>
+			</td></tr>		
+			#end
+			</table>
+		</div>
+	</div>
+
+
+<!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+			
+		
+	</script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+</body>
+</html>

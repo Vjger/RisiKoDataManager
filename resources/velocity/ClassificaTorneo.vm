@@ -1,0 +1,39 @@
+				<div class="table100 ver1 m-b-20" style="width: 400px; margin: 0 auto;">
+					<div class="table100-head">
+						<table>
+							<thead>
+							<tr class="head">
+									<th class="column2" style="width: 10%; padding-left: 5px">Pos</th>
+									<th class="column2" style="width: 40%;">Nominativo</th>
+									<th class="column1" style="width: 10%;">Giocate</th>
+									<th class="column1" style="width: 10%;">Vinte</th>
+									<th class="column3" style="width: 10%;">Punti</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+
+					<div class="table100-body js-pscroll">
+						<table>
+							<tbody style="max-height: 1200px;>
+								#foreach( $rigaClassifica in $torneo.classifica )
+								#if ($foreach.count % 2 == 1)
+								<tr class="body" style="background-color: yellow; font-weight: bold;">
+								#else
+								<tr class="body" style="background-color: #ffad33; font-weight: bold;">
+								#end
+									<td class="column2" style="width: 10%; padding-left: 5px">$rigaClassifica.posizione</td>
+									#if ($rigaClassifica.idGiocatore == 0)
+										<td class="column2"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column2" style="white-space: nowrap; width: 40%;">$rigaClassifica.nominativoGiocatore</td>
+									#end
+									<td class="column1" style="width: 10%;">$rigaClassifica.partiteGiocate</td>
+									<td class="column1" style="width: 10%;">$rigaClassifica.numeroVittorie</td>
+									<td class="column3" style="width: 10%;">$rigaClassifica.punti</td>
+								</tr>
+								#end
+							</tbody>
+						</table>
+					</div>
+				</div>

@@ -1,0 +1,25 @@
+				<div class="table100 ver1 m-b-20" style="width: 100px; height: 100px">
+
+					<div class="table100-head">
+					<!--
+						<table>
+							<thead>
+							<tr class="head">
+									<th class="column6" style="font-size: 15px; height: 30px">$torneoDisputato.torneoRow.endDate</th>
+								</tr>
+							</thead>
+						</table>
+					-->
+					</div>
+	<!--
+					<div class="table100-body js-pscroll">
+						<table>
+							<tbody>
+								<tr class="body">
+									<td class="column6" style="$styleGenerator.getStyle($torneoDisputato.torneoRow.tipoTorneo); font-size: 10px">$torneoDisputato.torneoRow.nomeTorneo</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+   -->
+				</div>

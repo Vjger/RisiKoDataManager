@@ -1,0 +1,136 @@
+				<div class="table100 ver1 m-b-20" style="width: 250px">
+
+					<div class="table100-head">
+						<table>
+							<thead>
+							<tr class="head">
+									<th class="column6">Tavolo $partita.numeroTavolo</th>
+									<th class="column3">Punti</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+
+					<div class="table100-body js-pscroll">
+						<table>
+							<tbody>
+								<tr class="body">
+								#if ($partita.idGiocatore1 == $partita.idGiocatoreVincitore)
+									#if ($partita.idGiocatore1 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore1 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="color: red; white-space: nowrap">$partita.nominativoGiocatore1</td>
+									#end
+									<td class="column3" style="color: red">$partita.punteggioGiocatore1Int</td>
+								#else
+									#if ($partita.idGiocatore1 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore1 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="white-space: nowrap">$partita.nominativoGiocatore1</td>
+									#end
+									<td class="column3">$partita.punteggioGiocatore1Int</td>
+								#end
+								</tr>
+								<tr class="body">
+								#if ($partita.idGiocatore2 == $partita.idGiocatoreVincitore)
+									#if ($partita.idGiocatore2 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore2 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="color: red; white-space: nowrap">$partita.nominativoGiocatore2</td>
+									#end
+									<td class="column3" style="color: red">$partita.punteggioGiocatore2Int</td>
+								#else
+									#if ($partita.idGiocatore2 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore2 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="white-space: nowrap">$partita.nominativoGiocatore2</td>
+									#end
+									<td class="column3">$partita.punteggioGiocatore2Int</td>
+								#end
+								</tr>								
+								<tr class="body">
+								#if ($partita.idGiocatore3 == $partita.idGiocatoreVincitore)
+									#if ($partita.idGiocatore3 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore3 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="color: red; white-space: nowrap">$partita.nominativoGiocatore3</td>
+									#end
+									<td class="column3" style="color: red">$partita.punteggioGiocatore3Int</td>
+								#else
+									#if ($partita.idGiocatore3 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore3 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="white-space: nowrap">$partita.nominativoGiocatore3</td>
+									#end
+									<td class="column3">$partita.punteggioGiocatore3Int</td>
+								#end
+								</tr>		
+								<tr class="body">
+								#if (($partita.idGiocatore4 >= -1) && ($partita.idGiocatore4 == $partita.idGiocatoreVincitore))
+									#if ($partita.idGiocatore4 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore4 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="color: red; white-space: nowrap">$partita.nominativoGiocatore4</td>
+									#end
+									<td class="column3" style="color: red">$partita.punteggioGiocatore4Int</td>
+								#else
+									#if ($partita.idGiocatore4 >= -1)
+										#if ($partita.idGiocatore4 == -1)
+											<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+										#elseif ($partita.idGiocatore4 == 0)
+											<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+										#else		
+											<td class="column6" style="white-space: nowrap">$partita.nominativoGiocatore4</td>
+										#end
+										<td class="column3">$partita.punteggioGiocatore4Int</td>
+									#else
+										<td class="column6"></td>
+										<td class="column3"></td>
+									#end	
+								#end									
+								</tr>	
+								<tr class="body">
+								#if (($partita.idGiocatore5 >= -1) && ($partita.idGiocatore5 == $partita.idGiocatoreVincitore))
+									#if ($partita.idGiocatore5 == -1)
+										<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+									#elseif ($partita.idGiocatore5 == 0)
+										<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+									#else
+										<td class="column6" style="color: red; white-space: nowrap">$partita.nominativoGiocatore5</td>
+									#end
+									<td class="column3" style="color: red">$partita.punteggioGiocatore5Int</td>
+								#else
+									#if ($partita.idGiocatore5 >= -1)
+										#if ($partita.idGiocatore5 == -1)
+											<td class="column6"><img src="../images/icons/ghost_25x25.png" title="ghost" alt="ghost"></td>
+										#elseif ($partita.idGiocatore5 == 0)
+											<td class="column6"><img src="../images/icons/anonymous_25x25.png" title="anonimo" alt="anonimo"></td>
+										#else		
+											<td class="column6" style="white-space: nowrap">$partita.nominativoGiocatore5</td>
+										#end
+										<td class="column3">$partita.punteggioGiocatore5Int</td>
+									#else
+										<td class="column6"></td>
+										<td class="column3"></td>
+									#end	
+								#end	
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
