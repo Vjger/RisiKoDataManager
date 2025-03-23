@@ -1,0 +1,110 @@
+/* Da https://www.bestcssbuttongenerator.com */
+
+.tournamentsYearButton {
+	box-shadow: 3px 4px 0px 0px #8a2a21;
+	background:linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
+	background-color:#c62d1f;
+	border-radius:18px;
+	border:2px solid #d02718;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:10px 34px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #810e05;
+}
+.tournamentsYearButton:hover {
+	background:linear-gradient(to bottom, #f24437 5%, #c62d1f 100%);
+	background-color:#f24437;
+}
+.tournamentsYearButton:active {
+	position:relative;
+	top:1px;
+}
+
+.rankingYearButton {
+	box-shadow:inset 0px 1px 0px 0px #97c4fe;
+	background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);
+	background-color:#3d94f6;
+	border-radius:6px;
+	border:1px solid #337fed;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:10px 34px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #1570cd;
+}
+.rankingYearButton:hover {
+	background:linear-gradient(to bottom, #1e62d0 5%, #3d94f6 100%);
+	background-color:#1e62d0;
+}
+.rankingYearButton:active {
+	position:relative;
+	top:1px;
+}
+
+.yearButton {
+	box-shadow:inset 0px 1px 0px 0px #f29c93;
+	background:linear-gradient(to bottom, #fe1a00 5%, #ce0100 100%);
+	background-color:#fe1a00;
+	border-radius:6px;
+	border:1px solid #d83526;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #b23e35;
+}
+.yearButton:hover {
+	background:linear-gradient(to bottom, #ce0100 5%, #fe1a00 100%);
+	background-color:#ce0100;
+}
+.yearButton:active {
+	position:relative;
+	top:1px;
+}
+
+.torneoButton {
+	box-shadow:inset 0px 1px 0px 0px #fff6af;
+	/*
+	background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+	background-color:#ffec64;
+	*/
+	border-radius:16px;
+	border:1px solid #ffaa22;
+	display:inline-block;
+	cursor:pointer;
+	color:#333333;
+	font-family:Arial;
+	font-size:15px;
+	/*font-weight:bold;*/
+	padding:5px 5px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffee66;
+
+	width: 130px;
+	height: 120px;
+
+}
+/*
+.torneoButton:hover {
+	background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+	background-color:#ffab23;
+}
+*/
+.torneoButton:active {
+	position:relative;
+	top:1px;
+}
+
+
