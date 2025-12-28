@@ -1,5 +1,7 @@
 package it.desimone.gsheetsaccess.statistiche;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -35,27 +37,30 @@ public class ReportTournaments {
 	}
 
 	public List<String> getDateList(){
-		return getDateSet().stream().sorted().collect(Collectors.toList());
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		return getDateSet().stream().map(d -> LocalDate.parse(d, inputFormatter)).sorted().map(d -> d.format(inputFormatter)).collect(Collectors.toList());
 	}
 	
-	public int[][] getMatrix() {
+	public MatchByYearAndClubValue[][] getMatrix() {
 		Set<String> organizzatori = getOrganizzatori();
 		List<String> dateList = getDateList();
-		int[][] matrix = new int[organizzatori.size()][dateList.size()];
+		MatchByYearAndClubValue[][] matrix = new MatchByYearAndClubValue[dateList.size()][organizzatori.size()];
 		
 		int columnIndex = 0;
 		for (MatchByYearAndClubKey matchByYearAndClubKey : statisticsByYear.keySet()) {
 			 List<MatchByYearAndClubValue> matches = statisticsByYear.get(matchByYearAndClubKey);
 			 for (MatchByYearAndClubValue match: matches) {
 				 int rowIndex = dateList.indexOf(match.getDataTurno());
-				 matrix[rowIndex][columnIndex] = match.getNumeroTavoli();
+				 matrix[rowIndex][columnIndex] = match;
 			 }
 			 columnIndex++;
 		}
 		return matrix;
 	}
 	
-	public int[] getMatrixRow(int rowIndex) {
-		return getMatrix()[rowIndex];
+	public MatchByYearAndClubValue[] getMatrixRow(int rowIndex) {
+		MatchByYearAndClubValue[] matrixRow = getMatrix()[rowIndex];
+		return matrixRow;
 	}
 }

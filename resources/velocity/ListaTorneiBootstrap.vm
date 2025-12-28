@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Tornei</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/loghi/cup-160117_960_720.png"/>
+    <!-- Bootstrap CSS da CDN -->
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Altri CSS -->
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/buttons.css">    
+</head>
+<body>
+    <script>
+        function visualizzaSoloClub() {
+            var myselect = document.getElementById("selectClub");
+            var idClub = myselect.options[myselect.selectedIndex].value;
+            var x = document.querySelectorAll("[name^=club_]");
+            var i;
+            for (i = 0; i < x.length; i++) {
+                if (idClub == 'All') {
+                    x[i].style.display = "";
+                } else {
+                    if (x[i].getAttribute("name") == 'club_' + idClub) {
+                        x[i].style.display = "";
+                    } else {
+                        x[i].style.display = "none";
+                    }
+                }
+            }
+               function changeYear() {
+            var myselect = document.getElementById("selectYear");
+            var url = myselect.options[myselect.selectedIndex].value;
+            document.location.href = url;
+        }
+    </script>
+    
+    <div class="container mt-5">
+        <div class="wrap-table100">
+            <div class="table100 ver1 m-b-110">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <a href="index.html"><img src="images/icons/home.png" alt="Home"></a>
+                    <select id="selectYear" class="form-control w-auto" onChange="changeYear()">
+                        #foreach( $anno in $years )
+                            #set ($urlListaTornei = "listaTornei"+$anno+".html")
+                            <option value="$urlListaTornei" #if ($anno == $year)selected#end>$anno</option>
+                        #end
+                    </select>
+                    <span class="text-muted">Ultimo aggiornamento: $data</span>
+                </div>
+                <div class="text-center mb-4">
+                    <img src="images/loghi/tornei_360x171.png" alt="Tornei">
+                    <div class="yearButton">$year</div>
+                </div>
+                <input class="form-control mb-4" id="searchInput" type="text" placeholder="Cerca Tornei...">
+                <table class="table table-striped table-responsive">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Organizzatore
+                                <select id="selectClub" class="form-control w-auto" onChange="visualizzaSoloClub()">
+                                    <option value="All">TUTTI</option>
+                                    #foreach( $club in $clubs )
+                                        <option value="$htmlPublisher.getTorneoPage($club)">$club</option>
+                                    #end
+                                </select>
+                            </th>
+                            <th>Nome Torneo</th>
+                            <th>Sede</th>
+                            <th>Data Inizio</th>
+                            <th>Data Fine</th>
+                            <th>Partecipanti</th>
+                            <th>Turni previsti</th>
+                            <th>Tavoli</th>
+                            <th>Concluso</th>
+                            <th><img src="images/icons/note.png" title="note" alt="note"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="torneiTable">
+                        #foreach( $torneo in $tornei )
+                            #set( $stileCella = $styleGenerator.getStyle($torneo.torneoRow.tipoTorneo))
+                            #set ($urlTorneo = $htmlPublisher.getTorneoPage($torneo.torneoRow.idTorneo)+".html" )
+                            #set ($urlTabellinoClub = "Tabellino"+$htmlPublisher.getTorneoPage($torneo.torneoRow.organizzatore)+"_"+$year+".html" )
+                            <tr name="club_$htmlPublisher.getTorneoPage($torneo.torneoRow.organizzatore)">
+                                <td style="$stileCella"><a style="color: inherit; cursor: pointer;" href="TABELLINI_CLUB/$urlTabellinoClub" target="_blank"><img src="images/loghi/rcu/${torneo.torneoRow.organizzatore} (Custom).png" title="$torneo.torneoRow.organizzatore" alt="$torneo.torneoRow.organizzatore"></a></td>
+                                <td style="$stileCella"><a style="color: inherit; cursor: pointer;" href="TORNEI/$urlTorneo" target="_blank">$torneo.torneoRow.nomeTorneo</a></td>
+                                <td style="$stileCella">$torneo.torneoRow.sede</td>
+                                <td style="$stileCella">$torneo.torneoRow.startDate</td>
+                                <td style="$stileCella">$torneo.torneoRow.endDate</td>
+                                <td style="$stileCella">$torneo.torneoRow.numeroPartecipanti</td>
+                                <td style="$stileCella">$torneo.torneoRow.numeroTurni</td>
+                                <td style="$stileCella">$torneo.torneoRow.numeroTavoli</td>
+                                <td style="$stileCella">
+                                    #if($torneo.concluso)
+                                        <img src="images/icons/concluso.png" title="concluso" alt="concluso">
+                                    #else
+                                        <img src="images/icons/nonConcluso.png" title="non concluso" alt="non concluso">
+                                    #end
+                                </td>
+                                <td style="$stileCella">
+                                    #if($torneo.torneoRow.note)
+                                        <img src="images/icons/note.png" title="$torneo.torneoRow.note" alt="note">
+                                    #end 
+                                </td>
+                            </tr>
+                        #end
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS e dipendenze da CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Altri JS -->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script>
+        $('.js-pscroll').each(function(){
+            var ps = new PerfectScrollbar(this);
+            $(window).on('resize', function(){
+                ps.update();
+            });
+        });
+        $(document).ready(function(){
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#torneiTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

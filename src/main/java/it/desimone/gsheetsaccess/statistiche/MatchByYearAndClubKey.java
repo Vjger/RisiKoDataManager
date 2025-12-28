@@ -48,6 +48,6 @@ public class MatchByYearAndClubKey implements Comparable<MatchByYearAndClubKey>{
 	@Override
 	public int compareTo(MatchByYearAndClubKey o) {
 		// TODO Auto-generated method stub
-		return o.getOrganizzatore().compareTo(getOrganizzatore());
+		return this.organizzatore.compareTo(o.getOrganizzatore());
 	}
 }
