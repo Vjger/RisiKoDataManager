@@ -34,7 +34,10 @@
 	  border-collapse: collapse;
 	  width: max-content;  /* per scroll orizzontale */
 	}
+}
 	*/
+	
+	
     th, td {
       border: 1px solid #999;
       padding: 6px 10px;
@@ -71,8 +74,8 @@
 		
 	<div class="limiter">
 		<div class="container-table100">			
-			<div class="wrap-table100" style="width: 3600px">
-				<div class="table100 ver1 m-b-110" style="width: 3600px; padding-top: 5px;">
+			<div class="wrap-table100" style="width: 1600px">
+				<div class="table100 ver1 m-b-110" style="width: 1600px; padding-top: 5px;">
 						<div>
 							<a href="index.html"><img src="images/icons/home.png"></a>
 							<!--
@@ -90,19 +93,41 @@
 							<span style="float: right; font-size: 12px;">Ultimo aggiornamento: $data</span>							
 						</div>
 						<div style="text-align: center;"><img src="images/loghi/tornei_360x171.png"><div class="yearButton">$year</div></div>
-						<!--
-						<div class="table-scroll" style="width: 3600px">
-						-->
+<!--
+						<div class="table-scroll-y">
+-->
 						<table style="border: 1px solid black; border-collapse: collapse;">
 							<thead>
 								<tr class="head">
-									<th class="column10">Data</th>
-									<th class="column10" colspan=$reportTournaments.getOrganizzatori().size()>Organizzatore</th>
+									<th class="column10px">Data</th>
+									<th class="column10px" colspan=$reportTournaments.getOrganizzatori().size()>Organizzatore</th>
 								</tr>
 								<tr class="head">
-									<th class="column10 sticky-col sticky-header"></th>
+									<th class="column10px sticky-col sticky-header"></th>
 									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
-										<th class="column10 sticky-header">$organizzatore</th>
+										<th class="column10px sticky-header"><img src="images/loghi/rcu/$organizzatore (Custom).png" style="width: 30px; height: auto;" title="$organizzatore" alt="$organizzatore"></th>								
+									#end	
+								</tr>
+								<tr class="head">
+									<th class="column10px sticky-col sticky-header" rowspan="2">1° Sem.</th>
+									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+										<th class="column10px sticky-header">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, true)</th>									
+									#end	
+								</tr>
+								<tr class="head">
+									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+										<th class="column10px sticky-header">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, true)</th>									
+									#end	
+								</tr>
+								<tr class="head">
+									<th class="column10px sticky-col sticky-header" rowspan="2">2° Sem.</th>
+									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+										<th class="column10px sticky-header">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, false)</th>									
+									#end	
+								</tr>
+								<tr class="head">
+									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+										<th class="column10px sticky-header">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, false)</th>									
 									#end	
 								</tr>
 							</thead>
@@ -110,22 +135,22 @@
 							#foreach( $dataEvento in $reportTournaments.getDateList() )
 								#set( $indexRow = $foreach.index )
 								<tr class="body" style="border: 1px solid black; border-collapse: collapse;">
-									<td class="column10 sticky-col" >$dataEvento</td>
+									<td class="column10px sticky-col" >$dataEvento</td>
 									#foreach( $matchByYearAndClubValue in $reportTournaments.getMatrixRow($indexRow) )	
 										#if ($matchByYearAndClubValue)
 									    	#set( $stileCella = $styleGenerator.getStyle($matchByYearAndClubValue.tipoTorneo) + "border: 1px solid black; border-collapse: collapse;")
 									    #else
 									    	#set( $stileCella = "border: 1px solid black; border-collapse: collapse;")
 									    #end	
-										<td class="column10" style="$stileCella">$!matchByYearAndClubValue.numeroTavoli</td>
+										<td class="column10px" style="$stileCella">$!matchByYearAndClubValue.numeroTavoli</td>
 									#end
 								</tr>
 							#end
 							</tbody>
 						</table>
-						<!--
+<!--
 						</div>
-						-->
+-->
 				</div>
 			</div>
 		</div>

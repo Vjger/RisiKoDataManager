@@ -63,4 +63,27 @@ public class ReportTournaments {
 		MatchByYearAndClubValue[] matrixRow = getMatrix()[rowIndex];
 		return matrixRow;
 	}
+	
+	private List<MatchByYearAndClubValue> getMatchBySixter(String year, String organizzatore, boolean first){
+		MatchByYearAndClubKey matchByYearAndClubKey = new MatchByYearAndClubKey(organizzatore);
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate inizioSecondoSemestre = LocalDate.of(Integer.valueOf(year),7,1);
+		if (first) {
+			return getStatistics(matchByYearAndClubKey).stream().filter(m -> LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
+		}else {
+			return getStatistics(matchByYearAndClubKey).stream().filter(m -> !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
+		}
+	}
+	
+	public int getNumeroDatePerSemestre(String year, String organizzatore, boolean first) {
+		return getMatchBySixter(year, organizzatore, first).size();
+	}
+	
+	public int getNumeroTavoliPerSemestre(String year, String organizzatore, boolean first) {
+		int result = 0;
+		for (MatchByYearAndClubValue matchByYearAndClubValue : getMatchBySixter(year, organizzatore, first)) {
+			result += matchByYearAndClubValue.getNumeroTavoli();
+		}
+		return result;
+	}
 }

@@ -88,7 +88,7 @@ public class ReportPublisher {
 		Template template = null;
 
 		try{
-		  template = Velocity.getTemplate("StatisticheClub.vm", "UTF-8");
+		  template = Velocity.getTemplate("StatisticheClub2.vm", "UTF-8");
 		}catch( ResourceNotFoundException rnfe ){
 			MyLogger.getLogger().severe(rnfe.getMessage());
 		}catch( ParseErrorException pee ){
