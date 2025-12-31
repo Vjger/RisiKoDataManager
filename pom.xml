@@ -4,7 +4,7 @@
 
   <groupId>it.desimone</groupId>
   <artifactId>RisiKoDataManager</artifactId>
-  <version>1.8</version>
+  <version>1.9</version>
   <packaging>jar</packaging>
 
   <name>RisiKoDataManager</name>

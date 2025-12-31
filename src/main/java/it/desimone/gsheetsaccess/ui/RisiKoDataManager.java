@@ -5,6 +5,7 @@ import it.desimone.gsheetsaccess.common.Configurator;
 import it.desimone.gsheetsaccess.gsheets.dto.TabellinoGiocatore;
 import it.desimone.gsheetsaccess.gsheets.dto.TorneiRow;
 import it.desimone.gsheetsaccess.htmlpublisher.HtmlPublisher;
+import it.desimone.gsheetsaccess.statistiche.StatsPublisher;
 import it.desimone.gsheetsaccess.utils.TorneiUtils;
 import it.desimone.utils.MyLogger;
 
@@ -25,6 +26,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -55,6 +57,7 @@ public class RisiKoDataManager extends JFrame {
     private JLabel mergeGiocatoreALabel = new JLabel("in ID");
     private JTextField idGiocatoreA = new JTextField(30);
     private JButton buttonMergeGiocatore = new JButton("Merge");
+    private JCheckBox checkStatistiche = new JCheckBox("Stats");
      
     private PrintStream standardOut;
      
@@ -94,6 +97,9 @@ public class RisiKoDataManager extends JFrame {
 
         constraints.gridx = gridXposition++;
         add(buttonPublishHtml, constraints);
+        
+        constraints.gridx = gridXposition++;
+        add(checkStatistiche, constraints);
         
         constraints.gridx = gridXposition++;
         add(buttonClear, constraints);
@@ -271,6 +277,9 @@ public class RisiKoDataManager extends JFrame {
             public void run() {
             	MyLogger.setConsoleLogLevel(Level.INFO);
             	HtmlPublisher.publish(true);
+            	if (checkStatistiche.isSelected()) {
+            		StatsPublisher.publish(true);
+            	}
             }
         });
         thread.start();

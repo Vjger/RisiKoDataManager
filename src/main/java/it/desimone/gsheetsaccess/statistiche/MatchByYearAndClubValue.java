@@ -44,6 +44,10 @@ public class MatchByYearAndClubValue {
 		this.numeroTavoli += numeroTavoli;
 	}
 
+	
+	public boolean isOfYear(String year) {
+		return dataTurno.endsWith(year);
+	}
 
 	@Override
 	public int hashCode() {

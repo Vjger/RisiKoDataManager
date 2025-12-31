@@ -4,12 +4,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import com.itextpdf.text.log.SysoLogger;
 
 public class ReportTournaments {
 
@@ -36,42 +39,82 @@ public class ReportTournaments {
 		return statisticsByYear.values().stream().flatMap(List::stream).map(MatchByYearAndClubValue::getDataTurno).collect(Collectors.toCollection(TreeSet<String>::new));
 	}
 
-	public List<String> getDateList(){
-		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		return getDateSet().stream().map(d -> LocalDate.parse(d, inputFormatter)).sorted().map(d -> d.format(inputFormatter)).collect(Collectors.toList());
+	public Set<String> getDateSet(String year){
+		return statisticsByYear.values().stream().flatMap(List::stream).filter(m -> m.isOfYear(year)).map(MatchByYearAndClubValue::getDataTurno).collect(Collectors.toCollection(TreeSet<String>::new));
 	}
 	
-	public MatchByYearAndClubValue[][] getMatrix() {
-		Set<String> organizzatori = getOrganizzatori();
-		List<String> dateList = getDateList();
+	public List<String> getDateList(String year){
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		return getDateSet(year).stream().map(d -> LocalDate.parse(d, inputFormatter)).sorted().map(d -> d.format(inputFormatter)).collect(Collectors.toList());
+	}
+	
+	public MatchByYearAndClubValue[][] getMatrix(String year) {
+		Set<String> organizzatori = selectOrganizzatoriByYear(year);
+		List<String> dateList = getDateList(year);
 		MatchByYearAndClubValue[][] matrix = new MatchByYearAndClubValue[dateList.size()][organizzatori.size()];
 		
 		int columnIndex = 0;
-		for (MatchByYearAndClubKey matchByYearAndClubKey : statisticsByYear.keySet()) {
-			 List<MatchByYearAndClubValue> matches = statisticsByYear.get(matchByYearAndClubKey);
+		for (String organizzatore : organizzatori) {
+			 List<MatchByYearAndClubValue> matches = statisticsByYear.get(new MatchByYearAndClubKey(organizzatore));
 			 for (MatchByYearAndClubValue match: matches) {
 				 int rowIndex = dateList.indexOf(match.getDataTurno());
-				 matrix[rowIndex][columnIndex] = match;
+				 if (rowIndex != -1) {
+					 matrix[rowIndex][columnIndex] = match;
+				 }
 			 }
 			 columnIndex++;
 		}
+//		for (MatchByYearAndClubKey matchByYearAndClubKey : statisticsByYear.keySet()) {
+//			 List<MatchByYearAndClubValue> matches = statisticsByYear.get(matchByYearAndClubKey);
+//			 for (MatchByYearAndClubValue match: matches) {
+//				 int rowIndex = dateList.indexOf(match.getDataTurno());
+//				 if (rowIndex != -1) {
+//					 matrix[rowIndex][columnIndex] = match;
+//				 }
+//			 }
+//			 columnIndex++;
+//		}
 		return matrix;
 	}
 	
-	public MatchByYearAndClubValue[] getMatrixRow(int rowIndex) {
-		MatchByYearAndClubValue[] matrixRow = getMatrix()[rowIndex];
+	public Set<String> selectOrganizzatoriByYear(String year){
+		Set<String> organizzatori = getOrganizzatori();
+		Iterator<String> iterator = organizzatori.iterator();
+		
+		String organizzatore = iterator.next();
+		while (iterator.hasNext()) {
+			
+			boolean haUnEVentoNellAnno = false;
+			for (MatchByYearAndClubValue matchByYearAndClubValue: getStatistics(new MatchByYearAndClubKey(organizzatore))) {
+				if (matchByYearAndClubValue.isOfYear(year)) {
+					haUnEVentoNellAnno = true;
+					break;
+				}
+			}
+			
+			if (!haUnEVentoNellAnno) {
+				iterator.remove();
+			}
+			organizzatore = iterator.next();
+		}
+		return organizzatori;
+	}
+	
+	public MatchByYearAndClubValue[] getMatrixRow(String year, int rowIndex) {
+		MatchByYearAndClubValue[] matrixRow = getMatrix(year)[rowIndex];
 		return matrixRow;
 	}
 	
 	private List<MatchByYearAndClubValue> getMatchBySixter(String year, String organizzatore, boolean first){
 		MatchByYearAndClubKey matchByYearAndClubKey = new MatchByYearAndClubKey(organizzatore);
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate inizioAnno = LocalDate.of(Integer.valueOf(year),1,1);
 		LocalDate inizioSecondoSemestre = LocalDate.of(Integer.valueOf(year),7,1);
 		if (first) {
-			return getStatistics(matchByYearAndClubKey).stream().filter(m -> LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
+			return getStatistics(matchByYearAndClubKey).stream().filter(m -> !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioAnno) && LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
 		}else {
-			return getStatistics(matchByYearAndClubKey).stream().filter(m -> !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
+			return getStatistics(matchByYearAndClubKey).stream().filter(m -> !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioAnno) && !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
 		}
 	}
 	
