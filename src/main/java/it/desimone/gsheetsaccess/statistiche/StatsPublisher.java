@@ -5,13 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
@@ -22,6 +19,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
+import it.desimone.ftputils.AlterVistaUtil;
 import it.desimone.gsheetsaccess.common.Configurator;
 import it.desimone.gsheetsaccess.common.ResourceWorking;
 import it.desimone.gsheetsaccess.dto.TorneoPubblicato;
@@ -31,24 +29,41 @@ import it.desimone.gsheetsaccess.htmlpublisher.StyleGenerator;
 import it.desimone.gsheetsaccess.utils.TorneiUtils;
 import it.desimone.utils.MyLogger;
 
-public class ReportPublisher {
+public class StatsPublisher {
 
 	private static ReportTournaments reportTournaments = new ReportTournaments();
 	
 	public static final String FOLDER_PATH = ResourceWorking.htmlPagesPath();
 
-	public static void main(String[] args) {
+	public static void publish(boolean withUpload) {
 		MyLogger.setConsoleLogLevel(Level.INFO);
-		String year = "2025";
+		
 		Configurator.loadConfiguration(Configurator.Environment.PRODUCTION);
-		List<TorneoPubblicato> torneiPubblicati = TorneiUtils.caricamentoTornei(year);
-		Stream<TorneoPubblicato> streamTorneiPubblicati = torneiPubblicati.stream();
-		streamTorneiPubblicati.forEach(torneoPubblicato -> convertTournamentsIntoMap(torneoPubblicato));
-
-		File statisticheClub = new File(FOLDER_PATH, "statisticheClub"+year+".html");
-		statistichePublisher(reportTournaments, statisticheClub, year);
+		
+		List<Integer> years = Configurator.getTorneiYears();
+		//years = Collections.singletonList(2025);
+		for (Integer year: years) {
+			List<TorneoPubblicato> torneiPubblicati = TorneiUtils.caricamentoTornei(year.toString());
+			Stream<TorneoPubblicato> streamTorneiPubblicati = torneiPubblicati.stream();
+			streamTorneiPubblicati.forEach(torneoPubblicato -> convertTournamentsIntoMap(torneoPubblicato));
+	
+			File statisticheClub = new File(FOLDER_PATH, "statisticheClub"+year+".html");
+			statistichePublisher(reportTournaments, statisticheClub, year.toString());
+			
+			if (withUpload){
+				try{
+					uploadFiles(statisticheClub);
+				}catch(IOException ioe){
+					MyLogger.getLogger().severe("Errore nel ftp dei file: "+ioe.getMessage());
+				}
+			}
+		}
 	}
 
+	private static void uploadFiles(File file) throws IOException{
+		AlterVistaUtil.uploadInRoot(Collections.singletonList(file));
+	}
+	
 	private static void convertTournamentsIntoMap(TorneoPubblicato torneoPubblicato) {
 		List<MatchByYearAndClubValue> values;
 		MatchByYearAndClubKey matchByYearAndClubKey = new MatchByYearAndClubKey(torneoPubblicato.getTorneoRow().getOrganizzatore());
@@ -88,7 +103,7 @@ public class ReportPublisher {
 		Template template = null;
 
 		try{
-		  template = Velocity.getTemplate("StatisticheClub2.vm", "UTF-8");
+		  template = Velocity.getTemplate("StatisticheClub.vm", "UTF-8");
 		}catch( ResourceNotFoundException rnfe ){
 			MyLogger.getLogger().severe(rnfe.getMessage());
 		}catch( ParseErrorException pee ){

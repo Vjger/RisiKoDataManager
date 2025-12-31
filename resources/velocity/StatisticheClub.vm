@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-	<title>Tornei</title>
+	<title>Statistiche annuali</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -86,8 +86,8 @@
 							-->
 							<select id="selectYear" onChange="changeYear()">
 								#foreach( $anno in $years )
-									#set ($urlListaTornei = "listaTornei"+$anno+".html")
-									<option value="$urlListaTornei" #if ($anno == $year)selected#end>$anno</option>
+									#set ($urlStatisticheClub = "statisticheClub"+$anno+".html")
+									<option value="$urlStatisticheClub" #if ($anno == $year)selected#end>$anno</option>
 								#end
 							</select> 
 							<span style="float: right; font-size: 12px;">Ultimo aggiornamento: $data</span>							
@@ -100,43 +100,43 @@
 							<thead>
 								<tr class="head">
 									<th class="column10px">Data</th>
-									<th class="column10px" colspan=$reportTournaments.getOrganizzatori().size()>Organizzatore</th>
+									<th class="column10px" colspan=$reportTournaments.selectOrganizzatoriByYear($year).size()>Organizzatore</th>
 								</tr>
 								<tr class="head">
 									<th class="column10px sticky-col sticky-header"></th>
-									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
 										<th class="column10px sticky-header"><img src="images/loghi/rcu/$organizzatore (Custom).png" style="width: 30px; height: auto;" title="$organizzatore" alt="$organizzatore"></th>								
 									#end	
 								</tr>
 								<tr class="head">
 									<th class="column10px sticky-col sticky-header" rowspan="2">1° Sem.</th>
-									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
 										<th class="column10px sticky-header">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, true)</th>									
 									#end	
 								</tr>
 								<tr class="head">
-									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
 										<th class="column10px sticky-header">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, true)</th>									
 									#end	
 								</tr>
 								<tr class="head">
 									<th class="column10px sticky-col sticky-header" rowspan="2">2° Sem.</th>
-									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
 										<th class="column10px sticky-header">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, false)</th>									
 									#end	
 								</tr>
 								<tr class="head">
-									#foreach( $organizzatore in $reportTournaments.getOrganizzatori() )
+									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
 										<th class="column10px sticky-header">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, false)</th>									
 									#end	
 								</tr>
 							</thead>
 							<tbody>
-							#foreach( $dataEvento in $reportTournaments.getDateList() )
+							#foreach( $dataEvento in $reportTournaments.getDateList($year) )
 								#set( $indexRow = $foreach.index )
 								<tr class="body" style="border: 1px solid black; border-collapse: collapse;">
 									<td class="column10px sticky-col" >$dataEvento</td>
-									#foreach( $matchByYearAndClubValue in $reportTournaments.getMatrixRow($indexRow) )	
+									#foreach( $matchByYearAndClubValue in $reportTournaments.getMatrixRow($year, $indexRow) )	
 										#if ($matchByYearAndClubValue)
 									    	#set( $stileCella = $styleGenerator.getStyle($matchByYearAndClubValue.tipoTorneo) + "border: 1px solid black; border-collapse: collapse;")
 									    #else
