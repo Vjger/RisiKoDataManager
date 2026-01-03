@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Statistiche annuali</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/loghi/cup-160117_960_720.png"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/buttons.css">	
+<!--===============================================================================================-->
+    <script src="js/chart.umd.js"></script>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .chart-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+        }
+
+        .chart-box h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .full {
+            grid-column: span 2;
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-table100">			
+			<div class="wrap-table100" style="width: 1800px">
+				<div class="table100 ver1 m-b-110" style="width: 1800px; padding-top: 5px;">
+						<div>
+							<a href="index.html"><img src="images/icons/home.png"></a>
+							<span style="float: right; font-size: 12px;">Ultimo aggiornamento: $data</span>							
+						</div>
+						<div style="text-align: center;"><img src="images/loghi/tornei_360x171.png"></div>
+
+<div class="grid" style="padding-top: 5px; padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
+
+    <div class="chart-box">
+        <h3>N° Club</h3>
+        <canvas id="chart1"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>N° Eventi</h3>
+        <canvas id="chart2"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>N° Partite</h3>
+        <canvas id="chart3"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>N° Giocatori</h3>
+        <canvas id="chart4"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>N° Giornate</h3>
+        <canvas id="chart5"></canvas>
+    </div>
+
+</div>
+
+<script>
+    // CATEGORIE COMUNI
+    const labels = [
+    				#foreach( $anno in $years )
+						$anno,								
+					#end
+					];
+
+    // COLORI FISSI PER CATEGORIA
+	const basePalette = [
+	    "#4e79a7", "#59a14f", "#f28e2b", "#e15759",
+	    "#76b7b2", "#edc949"
+	];
+	
+	function generateColors(count) {
+	    if (count <= basePalette.length) {
+	        return basePalette.slice(0, count);
+	    }
+
+    const colors = [...basePalette];
+    const extra = count - basePalette.length;
+
+    for (let i = 0; i < extra; i++) {
+        const hue = Math.round((360 / extra) * i);
+        colors.push(`hsl(${hue}, 60%, 55%)`);
+    }
+    return colors;
+}
+    const categoryColors = generateColors(labels.length);
+
+    // DATI (esempio)
+    const data = [
+        { id: "chart1", values: [
+			            		#foreach( $anno in $years ) 
+									$reportTournaments.getNumberOfClubByYear($anno),								
+								#end
+        						]
+        },
+        { id: "chart2", values: [
+			            		#foreach( $anno in $years ) 
+									$reportTournaments.getNumberOfEventsByYear($anno),								
+								#end
+        						]
+        },
+        { id: "chart3", values: [
+			            		#foreach( $anno in $years ) 
+									$reportTournaments.getNumberOfMatchesByYear($anno),								
+								#end
+        						]
+        },
+        { id: "chart4", values: [
+			            		#foreach( $anno in $years ) 
+									$reportTournaments.getNumberOfPlayersByYear($anno),								
+								#end
+        						]
+        },
+        { id: "chart5", values: [
+			            		#foreach( $anno in $years ) 
+									$reportTournaments.getNumberOfDatesByYear($anno),								
+								#end
+        						]
+        }
+    ];
+
+    data.forEach(cfg => {
+        const ctx = document.getElementById(cfg.id).getContext("2d");
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: cfg.values,
+                    backgroundColor: categoryColors
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false   // ⛔ niente label
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: cfg.max
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+			
+		
+	</script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+</body>
+</html>

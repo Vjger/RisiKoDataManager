@@ -2,8 +2,6 @@ package it.desimone.gsheetsaccess.statistiche;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,35 +10,46 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import com.itextpdf.text.log.SysoLogger;
-
 public class ReportTournaments {
 
-	private Map<MatchByYearAndClubKey, List<MatchByYearAndClubValue>> statisticsByYear = new TreeMap<MatchByYearAndClubKey, List<MatchByYearAndClubValue>>();
+	private Map<MatchByYearAndClubKey, List<MatchByYearAndClubValue>> statisticsByYearAndClub = new TreeMap<MatchByYearAndClubKey, List<MatchByYearAndClubValue>>();
+	private Map<Integer, AnnualStatistics> statisticsByYear = new TreeMap<Integer, AnnualStatistics>();
 
 	
 	public void putStatistics(MatchByYearAndClubKey matchByYearAndClubKey, List<MatchByYearAndClubValue> matchByYearAndClubValues) {
-		statisticsByYear.put(matchByYearAndClubKey, matchByYearAndClubValues);
+		statisticsByYearAndClub.put(matchByYearAndClubKey, matchByYearAndClubValues);
+	}
+	
+	public void putAnnualStatistics(Integer year, AnnualStatistics annualStatistics) {
+		statisticsByYear.put(year, annualStatistics);
 	}
 	
 	public List<MatchByYearAndClubValue> getStatistics(MatchByYearAndClubKey matchByYearAndClubKey) {
-		return statisticsByYear.get(matchByYearAndClubKey);
+		return statisticsByYearAndClub.get(matchByYearAndClubKey);
 	}
 	
-	public boolean containsStatistics(MatchByYearAndClubKey matchByYearAndClubKey) {
-		return statisticsByYear.containsKey(matchByYearAndClubKey);
+	public AnnualStatistics getAnnualStatistics(Integer year) {
+		return statisticsByYear.get(year);
+	}
+	
+	public boolean containsStatisticsByYearAndClub(MatchByYearAndClubKey matchByYearAndClubKey) {
+		return statisticsByYearAndClub.containsKey(matchByYearAndClubKey);
+	}
+	
+	public boolean containsStatisticsByYear(Integer year) {
+		return statisticsByYear.containsKey(year);
 	}
 	
 	public Set<String> getOrganizzatori(){
-		return statisticsByYear.keySet().stream().map(MatchByYearAndClubKey::getOrganizzatore).collect(Collectors.toCollection(TreeSet<String>::new));
+		return statisticsByYearAndClub.keySet().stream().map(MatchByYearAndClubKey::getOrganizzatore).collect(Collectors.toCollection(TreeSet<String>::new));
 	}
 	
 	public Set<String> getDateSet(){
-		return statisticsByYear.values().stream().flatMap(List::stream).map(MatchByYearAndClubValue::getDataTurno).collect(Collectors.toCollection(TreeSet<String>::new));
+		return statisticsByYearAndClub.values().stream().flatMap(List::stream).map(MatchByYearAndClubValue::getDataTurno).collect(Collectors.toCollection(TreeSet<String>::new));
 	}
 
 	public Set<String> getDateSet(String year){
-		return statisticsByYear.values().stream().flatMap(List::stream).filter(m -> m.isOfYear(year)).map(MatchByYearAndClubValue::getDataTurno).collect(Collectors.toCollection(TreeSet<String>::new));
+		return statisticsByYearAndClub.values().stream().flatMap(List::stream).filter(m -> m.isOfYear(year)).map(MatchByYearAndClubValue::getDataTurno).collect(Collectors.toCollection(TreeSet<String>::new));
 	}
 	
 	public List<String> getDateList(String year){
@@ -56,7 +65,7 @@ public class ReportTournaments {
 		
 		int columnIndex = 0;
 		for (String organizzatore : organizzatori) {
-			 List<MatchByYearAndClubValue> matches = statisticsByYear.get(new MatchByYearAndClubKey(organizzatore));
+			 List<MatchByYearAndClubValue> matches = statisticsByYearAndClub.get(new MatchByYearAndClubKey(organizzatore));
 			 for (MatchByYearAndClubValue match: matches) {
 				 int rowIndex = dateList.indexOf(match.getDataTurno());
 				 if (rowIndex != -1) {
@@ -111,10 +120,11 @@ public class ReportTournaments {
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate inizioAnno = LocalDate.of(Integer.valueOf(year),1,1);
 		LocalDate inizioSecondoSemestre = LocalDate.of(Integer.valueOf(year),7,1);
+		LocalDate fineSecondoSemestre = LocalDate.of(Integer.valueOf(year),12,31);
 		if (first) {
 			return getStatistics(matchByYearAndClubKey).stream().filter(m -> !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioAnno) && LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
 		}else {
-			return getStatistics(matchByYearAndClubKey).stream().filter(m -> !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioAnno) && !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre)).collect(Collectors.toList());
+			return getStatistics(matchByYearAndClubKey).stream().filter(m -> !LocalDate.parse(m.getDataTurno(), inputFormatter).isBefore(inizioSecondoSemestre) && !LocalDate.parse(m.getDataTurno(), inputFormatter).isAfter(fineSecondoSemestre)).collect(Collectors.toList());
 		}
 	}
 	
@@ -128,5 +138,25 @@ public class ReportTournaments {
 			result += matchByYearAndClubValue.getNumeroTavoli();
 		}
 		return result;
+	}
+	
+	public int getNumberOfClubByYear(Integer year) {
+		return getAnnualStatistics(year).getNumberOfClubs();
+	}
+	
+	public int getNumberOfMatchesByYear(Integer year) {
+		return getAnnualStatistics(year).getNumberOfMatches();
+	}
+	
+	public int getNumberOfDatesByYear(Integer year) {
+		return getAnnualStatistics(year).getNumberOfDates();
+	}
+	
+	public int getNumberOfEventsByYear(Integer year) {
+		return getAnnualStatistics(year).getNumberOfEvents();
+	}
+	
+	public int getNumberOfPlayersByYear(Integer year) {
+		return getAnnualStatistics(year).getNumberOfPlayers();
 	}
 }

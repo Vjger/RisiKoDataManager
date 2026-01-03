@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-	<title>Statistiche annuali</title>
+	<title>Statistiche club annuali</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -78,12 +78,6 @@
 				<div class="table100 ver1 m-b-110" style="width: 1600px; padding-top: 5px;">
 						<div>
 							<a href="index.html"><img src="images/icons/home.png"></a>
-							<!--
-							#foreach( $year in $years )
-								#set ($urlListaTornei = "listaTornei"+$year+".html")
-								<a href="$urlListaTornei" class="tournamentsYearButton">$year</a>
-							#end
-							-->
 							<select id="selectYear" onChange="changeYear()">
 								#foreach( $anno in $years )
 									#set ($urlStatisticheClub = "statisticheClub"+$anno+".html")
@@ -108,26 +102,42 @@
 										<th class="column10px sticky-header"><img src="images/loghi/rcu/$organizzatore (Custom).png" style="width: 30px; height: auto;" title="$organizzatore" alt="$organizzatore"></th>								
 									#end	
 								</tr>
+<!--								
+								<tr class="head">
+									<th class="column10px sticky-col sticky-header">1° Sem.</th>
+									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
+										<th class="column10px sticky-header">
+											<table><tr><th style="font-size: 15px">
+											$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, true)
+											</th><th style="font-size: 15px">
+											$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, true)
+											</th>
+											</tr>
+											</table>
+										</th>									
+									#end	
+								</tr>
+-->
 								<tr class="head">
 									<th class="column10px sticky-col sticky-header" rowspan="2">1° Sem.</th>
 									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
-										<th class="column10px sticky-header">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, true)</th>									
+										<th class="column10px sticky-header" style="font-size: 15px">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, true)</th>									
 									#end	
 								</tr>
 								<tr class="head">
 									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
-										<th class="column10px sticky-header">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, true)</th>									
+										<th class="column10px sticky-header" style="font-size: 15px">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, true)</th>									
 									#end	
 								</tr>
 								<tr class="head">
 									<th class="column10px sticky-col sticky-header" rowspan="2">2° Sem.</th>
 									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
-										<th class="column10px sticky-header">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, false)</th>									
+										<th class="column10px sticky-header" style="font-size: 15px">$reportTournaments.getNumeroDatePerSemestre($year, $organizzatore, false)</th>									
 									#end	
 								</tr>
 								<tr class="head">
 									#foreach( $organizzatore in $reportTournaments.selectOrganizzatoriByYear($year) )
-										<th class="column10px sticky-header">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, false)</th>									
+										<th class="column10px sticky-header" style="font-size: 15px">$reportTournaments.getNumeroTavoliPerSemestre($year, $organizzatore, false)</th>									
 									#end	
 								</tr>
 							</thead>
