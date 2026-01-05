@@ -1,5 +1,6 @@
 package it.desimone.gsheetsaccess.statistiche;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,7 @@ public class AnnualStatistics {
 	private Map<String, Set<String>> annualDates = new HashMap<String, Set<String>>();
 	private Set<String> annualOrganizers = new HashSet<String>();
 	private Set<Integer> annualPlayers = new HashSet<Integer>();
+	private Map<Integer, Set<String>> annualPlayerAndTournaments = new HashMap<Integer, Set<String>>();
 	
 	public int getNumberOfClubs() {
 		return this.annualOrganizers.size();
@@ -73,6 +75,12 @@ public class AnnualStatistics {
 		this.annualPlayers.add(playerId);
 	}
 	
+	public void addPlayer(Set<Integer> playerIds, String tournamentId) {
+		for (Integer playerId: playerIds) {
+			this.annualPlayerAndTournaments.computeIfAbsent(playerId, k -> new HashSet<>()).add(tournamentId);
+		}
+	}
+	
 	public void addNumberOfDates(int adder) {
 		this.numberOfDates += adder;
 	}
@@ -80,4 +88,9 @@ public class AnnualStatistics {
 	public void addDate(String organizzatore, String date) {
 		this.annualDates.computeIfAbsent(organizzatore, k -> new HashSet<>()).add(date);
 	}
+	
+	public Collection<Set<String>> getAnnualPlayersAndTournamentsDistribution(){
+		return annualPlayerAndTournaments.values();
+	}
+	
 }

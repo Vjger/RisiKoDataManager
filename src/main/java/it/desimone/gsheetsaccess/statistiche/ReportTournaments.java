@@ -2,6 +2,9 @@ package it.desimone.gsheetsaccess.statistiche;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -159,4 +162,38 @@ public class ReportTournaments {
 	public int getNumberOfPlayersByYear(Integer year) {
 		return getAnnualStatistics(year).getNumberOfPlayers();
 	}
+	
+	public Map<Integer, Long> getHistogramPlayerByYear(Integer year) {
+		AnnualStatistics annualStatistics = getAnnualStatistics(year);
+		Map<Integer, Long> histogram =
+				annualStatistics.getAnnualPlayersAndTournamentsDistribution().stream()
+			        .collect(Collectors.groupingBy(
+			            Set::size,
+			            Collectors.counting()
+			        ));
+		return histogram;
+	}
+
+	public int medianFromHistogram(Map<Integer, Long> histogram) {
+
+	    // ordiniamo per numero tornei
+	    TreeMap<Integer, Long> sorted = new TreeMap<>(histogram);
+
+	    long totalPlayers = sorted.values().stream()
+	                              .mapToLong(Long::longValue)
+	                              .sum();
+
+	    long cumulative = 0;
+	    long threshold = (totalPlayers + 1) / 2; // mediana statistica
+
+	    for (Map.Entry<Integer, Long> entry : sorted.entrySet()) {
+	        cumulative += entry.getValue();
+	        if (cumulative >= threshold) {
+	            return entry.getKey(); // X cercato
+	        }
+	    }
+
+	    throw new IllegalStateException("Istogramma vuoto");
+	}
+
 }

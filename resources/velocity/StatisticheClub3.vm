@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <title>Statistiche club annuali</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" href="images/loghi/cup-160117_960_720.png"/>
+
+  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="vendor/animate/animate.css">
+  <link rel="stylesheet" href="vendor/select2/select2.min.css">
+  <link rel="stylesheet" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <link rel="stylesheet" href="css/util.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/buttons.css">
+
+  <style>
+    .table-scroll-y {
+      max-height: 600px;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+
+    table.stats-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: max-content;
+      background: white;
+    }
+
+    th, td {
+      padding: 6px 10px;
+      text-align: center;
+      white-space: nowrap;
+      background: white;
+    }
+
+    /* ===== HEADER STICKY ===== */
+    thead tr {
+      background: #f2f2f2;
+      height: 42px;
+    }
+
+    thead th {
+      position: sticky;
+      background: #f2f2f2;
+      z-index: 10;
+      border: none;
+      box-shadow: inset 0 -1px 0 #999;
+    }
+
+    thead tr.h1 th { top: 0px; }
+    thead tr.h2 th { top: 42px; }
+    thead tr.h3 th { top: 84px; }
+    thead tr.h4 th { top: 126px; }
+    thead tr.h5 th { top: 168px; }
+    thead tr.h6 th { top: 210px; }
+
+    /* ===== PRIMA COLONNA STICKY ===== */
+    .sticky-col {
+      position: sticky;
+      left: 0;
+      background: #f9f9f9;
+      z-index: 5;
+    }
+
+    thead th.sticky-col {
+      z-index: 30;
+    }
+
+    /* ===== GRID TABELLA ===== */
+    .stats-table th,
+    .stats-table td {
+      border-right: 1px solid #999;
+      border-bottom: 1px solid #999;
+    }
+
+    .stats-table tr th:first-child,
+    .stats-table tr td:first-child {
+      border-left: 1px solid #999;
+    }
+
+    .stats-table thead tr:first-child th {
+      border-top: 1px solid #999;
+    }
+
+    .container-table100,
+    .wrap-table100,
+    .table100 {
+      overflow: visible !important;
+    }
+  </style>
+</head>
+
+<body>
+
+<script>
+function changeYear() {
+  var myselect = document.getElementById("selectYear");
+  document.location.href = myselect.value;
+}
+</script>
+
+<div class="limiter">
+  <div class="container-table100">
+    <div class="wrap-table100" style="width:1600px">
+      <div class="table100 ver1 m-b-110" style="width:1600px; padding-top:5px;">
+
+        <!-- HEADER PAGINA -->
+        <div>
+          <a href="index.html"><img src="images/icons/home.png"></a>
+
+          <select id="selectYear" onchange="changeYear()">
+            #foreach($anno in $years)
+              #set($urlStatisticheClub = "statisticheClub"+$anno+".html")
+              <option value="$urlStatisticheClub" #if($anno == $year)selected#end>
+                $anno
+              </option>
+            #end
+          </select>
+
+          <span style="float:right;font-size:12px">
+            Ultimo aggiornamento: $data
+          </span>
+        </div>
+
+        <div style="text-align:center">
+          <img src="images/loghi/tornei_360x171.png">
+          <div class="yearButton">$year</div>
+        </div>
+
+        <!-- ================= TABELLA ================= -->
+        <div class="table-scroll-y">
+
+          <table class="stats-table">
+            <thead>
+
+              <tr class="h1">
+                <th class="column10px sticky-col">Data</th>
+                <th colspan="$reportTournaments.selectOrganizzatoriByYear($year).size()">
+                  Organizzatore
+                </th>
+              </tr>
+
+              <tr class="h2">
+                <th class="column10px sticky-col"></th>
+                #foreach($organizzatore in $reportTournaments.selectOrganizzatoriByYear($year))
+                  <th class="column10px">
+                    <img src="images/loghi/rcu/$organizzatore (Custom).png"
+                         style="width:30px"
+                         title="$organizzatore"
+                         alt="$organizzatore">
+                  </th>
+                #end
+              </tr>
+
+              <tr class="h3">
+                <th class="column10px sticky-col" rowspan="2">1° Sem.</th>
+                #foreach($organizzatore in $reportTournaments.selectOrganizzatoriByYear($year))
+                  <th class="column10px">$reportTournaments.getNumeroDatePerSemestre($year,$organizzatore,true)</th>
+                #end
+              </tr>
+
+              <tr class="h4">
+                #foreach($organizzatore in $reportTournaments.selectOrganizzatoriByYear($year))
+                  <th class="column10px">$reportTournaments.getNumeroTavoliPerSemestre($year,$organizzatore,true)</th>
+                #end
+              </tr>
+
+              <tr class="h5">
+                <th class="column10px sticky-col" rowspan="2">2° Sem.</th>
+                #foreach($organizzatore in $reportTournaments.selectOrganizzatoriByYear($year))
+                  <th class="column10px">$reportTournaments.getNumeroDatePerSemestre($year,$organizzatore,false)</th>
+                #end
+              </tr>
+
+              <tr class="h6">
+                #foreach($organizzatore in $reportTournaments.selectOrganizzatoriByYear($year))
+                  <th class="column10px">$reportTournaments.getNumeroTavoliPerSemestre($year,$organizzatore,false)</th>
+                #end
+              </tr>
+
+            </thead>
+
+            <tbody>
+              #foreach($dataEvento in $reportTournaments.getDateList($year))
+                #set($indexRow = $foreach.index)
+                <tr>
+                  <td class="column10px sticky-col">$dataEvento</td>
+
+                  #foreach($match in $reportTournaments.getMatrixRow($year,$indexRow))
+                    #if($match)
+                      #set($stileCella = $styleGenerator.getStyle($match.tipoTorneo))
+                    #else
+                      #set($stileCella = "")
+                    #end
+                    <td class="column10px" style="$stileCella">$!match.numeroTavoli</td>
+                  #end
+                </tr>
+              #end
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/select2/select2.min.js"></script>
+<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

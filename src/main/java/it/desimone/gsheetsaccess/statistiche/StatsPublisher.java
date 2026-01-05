@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -58,11 +59,15 @@ public class StatsPublisher {
 		
 		for (Integer year: years) {
 			File statisticheClub = new File(FOLDER_PATH, "statisticheClub"+year+".html");
-			statistichePublisher(reportTournaments, statisticheClub, year.toString());
+			statistichePublisher(reportTournaments, statisticheClub, "StatisticheClub4.vm", year.toString());
+
+			File statistichePlayer = new File(FOLDER_PATH, "statisticheGiocatori"+year+".html");
+			statistichePublisher(reportTournaments, statistichePlayer, "StatisticheGiocatori.vm", year.toString());
 			
 			if (withUpload){
 				try{
 					uploadFiles(statisticheClub);
+					uploadFiles(statistichePlayer);
 				}catch(IOException ioe){
 					MyLogger.getLogger().severe("Errore nel ftp dei file: "+ioe.getMessage());
 				}
@@ -70,7 +75,7 @@ public class StatsPublisher {
 		}
 		
 		File statisticheAnnuali = new File(FOLDER_PATH, "statisticheAnnuali.html");
-		statisticheAnnualiPublisher(reportTournaments, statisticheAnnuali);
+		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2.vm", null);
 		
 		if (withUpload){
 			try{
@@ -103,34 +108,45 @@ public class StatsPublisher {
 	}
 	
 	private static void getStatisticsByYear(TorneoPubblicato torneoPubblicato) {
+		Object[] obj = getAnnualStatisticsByYearTournament(torneoPubblicato);
+		if (!ArrayUtils.isEmpty(obj)) {
+			Integer yearOfTournament = (Integer) obj[0];
+			AnnualStatistics annualStatisticsByYearTournament = (AnnualStatistics) obj[1];
+			annualStatisticsByYearTournament.addNumberOfEvents(1);
+			annualStatisticsByYearTournament.addPlayer(torneoPubblicato.getIdPartecipanti(), torneoPubblicato.getIdTorneo());
+			reportTournaments.putAnnualStatistics(yearOfTournament, annualStatisticsByYearTournament);
+		}
+		torneoPubblicato.getPartite().stream().forEach(partita -> manageAnnualStatistics(torneoPubblicato, partita));
+	}
+
+	private static Object[] getAnnualStatisticsByYearTournament(TorneoPubblicato torneoPubblicato) {
+		Integer yearOfTournament = null;
+		AnnualStatistics annualStatisticsByYearTournament = null;
 		TorneiRow torneiRow = torneoPubblicato.getTorneoRow();
 		String endDate = torneiRow.getEndDate();
 		if (StringUtils.isNotBlank(endDate)) {
 			DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 			LocalDate localDate = LocalDate.parse(endDate, inputFormatter);
-			Integer yearOfTournament = localDate.getYear();
-			//String yearStr = endDate.substring(6,10);
-			//Integer yearOfTournament = Integer.valueOf(yearStr);
+			yearOfTournament = localDate.getYear();
 			
-			AnnualStatistics annualStatistics;
 			if (reportTournaments.containsStatisticsByYear(yearOfTournament)) {
-				annualStatistics = reportTournaments.getAnnualStatistics(yearOfTournament);
+				annualStatisticsByYearTournament = reportTournaments.getAnnualStatistics(yearOfTournament);
 			}else {
-				annualStatistics = new AnnualStatistics();
+				annualStatisticsByYearTournament = new AnnualStatistics();
 			}
-			annualStatistics.addNumberOfEvents(1);
-			reportTournaments.putAnnualStatistics(yearOfTournament, annualStatistics);
-		}
-		torneoPubblicato.getPartite().stream().forEach(partita -> manageAnnualStatistics(torneoPubblicato.getTorneoRow().getOrganizzatore(), partita));
+		}		
+		return new Object[] {yearOfTournament, annualStatisticsByYearTournament};
 	}
-
-	private static void manageAnnualStatistics(String organizzatore, PartitaRow partita) {
-		String yearStr = partita.getDataTurno().substring(6,10);
-		Integer yearOfTournament = Integer.valueOf(yearStr);
+	
+	private static void manageAnnualStatistics(TorneoPubblicato torneoPubblicato, PartitaRow partita) {
+		String organizzatore = torneoPubblicato.getTorneoRow().getOrganizzatore();
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+		LocalDate localDate = LocalDate.parse( partita.getDataTurno(), inputFormatter);
+		Integer yearOfMatch = localDate.getYear();
 		
 		AnnualStatistics annualStatistics;
-		if (reportTournaments.containsStatisticsByYear(yearOfTournament)) {
-			annualStatistics = reportTournaments.getAnnualStatistics(yearOfTournament);
+		if (reportTournaments.containsStatisticsByYear(yearOfMatch)) {
+			annualStatistics = reportTournaments.getAnnualStatistics(yearOfMatch);
 		}else {
 			annualStatistics = new AnnualStatistics();
 		}
@@ -146,7 +162,7 @@ public class StatsPublisher {
 		if (Objects.nonNull(partita.getIdGiocatore5())) {
 			annualStatistics.addPlayer(partita.getIdGiocatore5());
 		}
-		reportTournaments.putAnnualStatistics(yearOfTournament, annualStatistics);
+		reportTournaments.putAnnualStatistics(yearOfMatch, annualStatistics);
 	}
 
 	private static void manageMatch(PartitaRow partita, String tipoTorneo, List<MatchByYearAndClubValue> values) {
@@ -161,7 +177,7 @@ public class StatsPublisher {
 		matchByYearAndClubValue.addNumeroTavoli(1);
 	}
 	
-	public static void statistichePublisher(ReportTournaments reportTournaments, File statisticheClub, String year){
+	public static void statistichePublisher(ReportTournaments reportTournaments, File statisticheFile, String templateName, String year){
 		
 		MyLogger.getLogger().info("Inizio scrittura statistiche per l'anno "+year);
 		
@@ -176,7 +192,7 @@ public class StatsPublisher {
 		Template template = null;
 
 		try{
-		  template = Velocity.getTemplate("StatisticheClub.vm", "UTF-8");
+		  template = Velocity.getTemplate(templateName, "UTF-8");
 		}catch( ResourceNotFoundException rnfe ){
 			MyLogger.getLogger().severe(rnfe.getMessage());
 		}catch( ParseErrorException pee ){
@@ -195,7 +211,7 @@ public class StatsPublisher {
 		
 		FileWriter writer = null;
 		try {
-			writer = new FileWriter(statisticheClub);
+			writer = new FileWriter(statisticheFile);
 			template.merge( context, writer );
 		} catch (IOException e) {
 			MyLogger.getLogger().severe(e.getMessage());
@@ -209,56 +225,4 @@ public class StatsPublisher {
 		}
 	}
 	
-	public static void statisticheAnnualiPublisher(ReportTournaments reportTournaments, File statisticheAnnualiClub){
-		
-		MyLogger.getLogger().info("Inizio scrittura statistiche annuali");
-		
-	    Properties p = new Properties();
-	    p.setProperty("input.encoding", "UTF-8");
-	    p.setProperty("resource.loader.file.path", ResourceWorking.velocityTemplatePath());
-	    p.setProperty("runtime.log.logsystem.log4j.logger","ReportPublisher");
-	    
-	    Velocity.init( p );
-
-		VelocityContext context = new VelocityContext();
-		Template template = null;
-
-		try{
-		  template = Velocity.getTemplate("StatisticheAnnuali2.vm", "UTF-8");
-		}catch( ResourceNotFoundException rnfe ){
-			MyLogger.getLogger().severe(rnfe.getMessage());
-		}catch( ParseErrorException pee ){
-			MyLogger.getLogger().severe(pee.getMessage());
-		}catch( MethodInvocationException mie ){
-			MyLogger.getLogger().severe(mie.getMessage());
-		}catch( Exception e ){
-			MyLogger.getLogger().severe(e.getMessage());
-		}
-		
-		List<Integer> years = Configurator.getTorneiYears();
-		//years.remove(new Integer(2020));
-		//years.remove(new Integer(2021));
-		//years.remove(new Integer(2022));
-		//years.remove(new Integer(2026));
-		context.put( "years",  years);
-		context.put( "reportTournaments", reportTournaments );
-		context.put( "styleGenerator", StyleGenerator.class);
-		context.put( "data", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-		
-		FileWriter writer = null;
-		try {
-			writer = new FileWriter(statisticheAnnualiClub);
-			template.merge( context, writer );
-		} catch (IOException e) {
-			MyLogger.getLogger().severe(e.getMessage());
-		}finally{
-			try {
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
 }
