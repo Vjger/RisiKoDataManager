@@ -59,10 +59,10 @@ public class StatsPublisher {
 		
 		for (Integer year: years) {
 			File statisticheClub = new File(FOLDER_PATH, "statisticheClub"+year+".html");
-			statistichePublisher(reportTournaments, statisticheClub, "StatisticheClub4.vm", year.toString());
+			statistichePublisher(reportTournaments, statisticheClub, "StatisticheClub4_Tab.vm", year.toString());
 
 			File statistichePlayer = new File(FOLDER_PATH, "statisticheGiocatori"+year+".html");
-			statistichePublisher(reportTournaments, statistichePlayer, "StatisticheGiocatori.vm", year.toString());
+			statistichePublisher(reportTournaments, statistichePlayer, "StatisticheGiocatori_Tab.vm", year.toString());
 			
 			if (withUpload){
 				try{
@@ -75,7 +75,10 @@ public class StatsPublisher {
 		}
 		
 		File statisticheAnnuali = new File(FOLDER_PATH, "statisticheAnnuali.html");
-		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2.vm", null);
+		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2_Tab.vm", null);
+		
+		File statisticheTab = new File(FOLDER_PATH, "statisticheTab.html");
+		statistichePublisher(reportTournaments, statisticheTab, "StatisticheTab.vm", "2025");
 		
 		if (withUpload){
 			try{
