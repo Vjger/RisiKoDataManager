@@ -7,8 +7,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -78,7 +80,7 @@ public class StatsPublisher {
 		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2_Tab.vm", null);
 		
 		File statisticheTab = new File(FOLDER_PATH, "statisticheTab.html");
-		statistichePublisher(reportTournaments, statisticheTab, "StatisticheTab.vm", "2025");
+		statistichePublisher(reportTournaments, statisticheTab, "StatisticheTab.vm", String.valueOf(GregorianCalendar.getInstance().get(Calendar.YEAR)));
 		
 		if (withUpload){
 			try{
