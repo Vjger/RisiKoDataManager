@@ -40,7 +40,7 @@ public class StatsPublisher {
 
 	private static ReportTournaments reportTournaments = new ReportTournaments();
 	
-	public static final String FOLDER_PATH = ResourceWorking.htmlPagesPath();
+	public static final String STATS_PATH = ResourceWorking.statsPath();
 
 	public static void main (String[] args) {
 		publish(false);
@@ -60,10 +60,10 @@ public class StatsPublisher {
 		}
 		
 		for (Integer year: years) {
-			File statisticheClub = new File(FOLDER_PATH, "statisticheClub"+year+".html");
+			File statisticheClub = new File(STATS_PATH, "statisticheClub"+year+".html");
 			statistichePublisher(reportTournaments, statisticheClub, "StatisticheClub4_Tab.vm", year.toString());
 
-			File statistichePlayer = new File(FOLDER_PATH, "statisticheGiocatori"+year+".html");
+			File statistichePlayer = new File(STATS_PATH, "statisticheGiocatori"+year+".html");
 			statistichePublisher(reportTournaments, statistichePlayer, "StatisticheGiocatori_Tab.vm", year.toString());
 			
 			if (withUpload){
@@ -76,10 +76,10 @@ public class StatsPublisher {
 			}
 		}
 		
-		File statisticheAnnuali = new File(FOLDER_PATH, "statisticheAnnuali.html");
+		File statisticheAnnuali = new File(STATS_PATH, "statisticheAnnuali.html");
 		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2_Tab.vm", null);
 		
-		File statisticheTab = new File(FOLDER_PATH, "statisticheTab.html");
+		File statisticheTab = new File(ResourceWorking.htmlPagesPath(), "statisticheTab.html");
 		statistichePublisher(reportTournaments, statisticheTab, "StatisticheTab.vm", String.valueOf(GregorianCalendar.getInstance().get(Calendar.YEAR)));
 		
 		if (withUpload){

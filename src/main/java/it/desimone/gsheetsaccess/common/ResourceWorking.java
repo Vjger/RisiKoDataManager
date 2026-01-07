@@ -50,7 +50,20 @@ public class ResourceWorking {
 	public static String htmlPagesPath(){
 		return ROOT+File.separator+"working"+File.separator+"htmlPages";
 	}
+	
+	public static String listTournamentsPath(){
+		return htmlPagesPath()+File.separator+"LISTA_TORNEI";
+	}
 
+	public static String listRankingsPath(){
+		return htmlPagesPath()+File.separator+"RANKING";
+	}
+	
+	public static String statsPath(){
+		return htmlPagesPath()+File.separator+"STATISTICHE";
+	}
+	
+	
 	public static String rankingThresholds(){
 		return ROOT+File.separator+"resources"+File.separator+"RankingThresholdsNew.xml";
 	}

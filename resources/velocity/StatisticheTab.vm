@@ -90,13 +90,13 @@ function getTabUrl(tab) {
 
   switch (tab) {
     case "statisticheAnnuali":
-      return "statisticheAnnuali.html";
+      return "./STATISTICHE/statisticheAnnuali.html";
 
     case "statisticheClub":
-      return "statisticheClub" + year + ".html";
+      return "./STATISTICHE/statisticheClub" + year + ".html";
 
     case "statisticheGiocatori":
-        return "statisticheGiocatori" + year + ".html";
+        return "./STATISTICHE/statisticheGiocatori" + year + ".html";
   }
 }
 

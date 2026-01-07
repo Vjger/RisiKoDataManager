@@ -7,21 +7,21 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/loghi/173-1735698_png-file-svg-ranking-icon-png.png"/>
+	<link rel="icon" type="image/png" href="../images/loghi/173-1735698_png-file-svg-ranking-icon-png.png"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/buttons.css">		
+	<link rel="stylesheet" type="text/css" href="../css/util.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/buttons.css">		
 <!--===============================================================================================-->
 </head>
 <body>
@@ -30,10 +30,10 @@
 		  var x = document.getElementById("tabellino"+numeroRiga);
 		  if (x.style.display === "none") {
 			x.style.display = "";
-			document.getElementById("plusminus"+numeroRiga).src='images/icons/minus.png';
+			document.getElementById("plusminus"+numeroRiga).src='../images/icons/minus.png';
 		  } else {
 			x.style.display = "none";
-			document.getElementById("plusminus"+numeroRiga).src='images/icons/plus.png';
+			document.getElementById("plusminus"+numeroRiga).src='../images/icons/plus.png';
 		  }
 		}
 		
@@ -48,8 +48,8 @@
 		<div class="container-table100">			
 			<div class="wrap-table100"  style="width: 1366px" >
 				<div class="table100 ver1 m-b-110" style="padding-top: 5px;">
-						<div><a href="index.html"><img src="images/icons/home.png"></a>
-							<a href="anagraficheDaVerificare.html"><img src="images/icons/cloni.png" title="anagrafiche da verificare"></a>
+						<div><a href="../index.html"><img src="../images/icons/home.png"></a>
+							<a href="../anagraficheDaVerificare.html"><img src="../images/icons/cloni.png" title="anagrafiche da verificare"></a>
 <!--							
 							#foreach( $year in $years )
 								#set ($urlRanking = "ranking"+$year+".html")
@@ -64,7 +64,7 @@
 							</select> 
 							<span style="float: right; font-size: 12px;">Ultimo aggiornamento: $data</span>	
 						</div>
-						<div style="text-align: center;"><img src="images/loghi/ranking_360x171.png"><div class="yearButton">$year</div></div>
+						<div style="text-align: center;"><img src="../images/loghi/ranking_360x171.png"><div class="yearButton">$year</div></div>
 						<table>
 							<thead>
 								<tr class="head">
@@ -78,16 +78,16 @@
 								</tr>
 								<tr class="head">
 									<th class="column10" colspan="5"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "RADUNO_NAZIONALE"))"><img src="images/icons/total.png" title="Totale"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "RADUNO_NAZIONALE"))"><img src="images/icons/barrier.png" title="Limite"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "MASTER"))"><img src="images/icons/total.png" title="Totale"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "MASTER"))"><img src="images/icons/barrier.png" title="Limite"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "OPEN"))"><img src="images/icons/total.png" title="Totale"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "OPEN"))"><img src="images/icons/barrier.png" title="Limite"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "INTERCLUB"))"><img src="images/icons/total.png" title="Totale"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "INTERCLUB"))"><img src="images/icons/barrier.png" title="Limite"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "CAMPIONATO"))"><img src="images/icons/total.png" title="Totale"></th>
-									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "CAMPIONATO"))"><img src="images/icons/barrier.png" title="Limite"></th>									
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "RADUNO_NAZIONALE"))"><img src="../images/icons/total.png" title="Totale"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "RADUNO_NAZIONALE"))"><img src="../images/icons/barrier.png" title="Limite"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "MASTER"))"><img src="../images/icons/total.png" title="Totale"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "MASTER"))"><img src="../images/icons/barrier.png" title="Limite"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "OPEN"))"><img src="../images/icons/total.png" title="Totale"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "OPEN"))"><img src="../images/icons/barrier.png" title="Limite"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "INTERCLUB"))"><img src="../images/icons/total.png" title="Totale"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "INTERCLUB"))"><img src="../images/icons/barrier.png" title="Limite"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "CAMPIONATO"))"><img src="../images/icons/total.png" title="Totale"></th>
+									<th class="column10" style="$styleGenerator.getStyle($Enum.valueOf($TipoTorneo, "CAMPIONATO"))"><img src="../images/icons/barrier.png" title="Limite"></th>									
 									<th class="column10" colspan="4"></th>									
 								</tr>
 								<tr class="head">
@@ -139,7 +139,7 @@
 									<tr class="body" style="background-color: #ffdf80; font-weight: bold;">
 									#end
 								#end
-									<td class="column10" onclick="toggle($scorePlayer.getAnagraficaGiocatore().getId())"><img id="plusminus$scorePlayer.getAnagraficaGiocatore().getId()" src="images/icons/plus.png" title="Espandi il tabellino"> </td>
+									<td class="column10" onclick="toggle($scorePlayer.getAnagraficaGiocatore().getId())"><img id="plusminus$scorePlayer.getAnagraficaGiocatore().getId()" src="../images/icons/plus.png" title="Espandi il tabellino"> </td>
 									<td class="column10">$foreach.count</td>
 									<td class="column10"><a name="$scorePlayer.getAnagraficaGiocatore().getId()">$scorePlayer.getAnagraficaGiocatore().getId()</a></td>
 									<td>$Capitalize.capitalize($scorePlayer.getAnagraficaGiocatore().getNome()) $Capitalize.capitalize($scorePlayer.getAnagraficaGiocatore().getCognome())</td>
@@ -183,8 +183,8 @@
 											#set ($urlTorneo = $htmlPublisher.getTorneoPage($tabellinoPlayer.torneo.torneoRow.idTorneo)+".html" )
 											#set ($urlTabellinoClub = "Tabellino"+$htmlPublisher.getTorneoPage($tabellinoPlayer.torneo.torneoRow.organizzatore)+"_"+$year+".html" )
 											<tr class="body">
-												<td class="column10" style="$styleGenerator.getStyle($tabellinoPlayer.torneo.torneoRow.tipoTorneo)"><a style="color: inherit; cursor: pointer;"  href="TABELLINI_CLUB/$urlTabellinoClub" target="_blank"><img src="images/loghi/rcu/${tabellinoPlayer.torneo.torneoRow.organizzatore} (Custom).png" title="$tabellinoPlayer.torneo.torneoRow.organizzatore" alt="$tabellinoPlayer.torneo.torneoRow.organizzatore"></a></td>
-												<td class="column10" style="$styleGenerator.getStyle($tabellinoPlayer.torneo.torneoRow.tipoTorneo)"><a style="color: inherit; cursor: pointer;"  href="TORNEI/$urlTorneo" target="_blank">$tabellinoPlayer.torneo.torneoRow.nomeTorneo</a></td>
+												<td class="column10" style="$styleGenerator.getStyle($tabellinoPlayer.torneo.torneoRow.tipoTorneo)"><a style="color: inherit; cursor: pointer;"  href="../TABELLINI_CLUB/$urlTabellinoClub" target="_blank"><img src="../images/loghi/rcu/${tabellinoPlayer.torneo.torneoRow.organizzatore} (Custom).png" title="$tabellinoPlayer.torneo.torneoRow.organizzatore" alt="$tabellinoPlayer.torneo.torneoRow.organizzatore"></a></td>
+												<td class="column10" style="$styleGenerator.getStyle($tabellinoPlayer.torneo.torneoRow.tipoTorneo)"><a style="color: inherit; cursor: pointer;"  href="../TORNEI/$urlTorneo" target="_blank">$tabellinoPlayer.torneo.torneoRow.nomeTorneo</a></td>
 												<td class="column10" style="$styleGenerator.getStyle($tabellinoPlayer.torneo.torneoRow.tipoTorneo)">$tabellinoPlayer.torneo.torneoRow.startDate</td>
 												<td class="column10" style="$styleGenerator.getStyle($tabellinoPlayer.torneo.torneoRow.tipoTorneo)">$tabellinoPlayer.torneo.torneoRow.endDate</td>
 												<td class="column10" style="$styleGenerator.getStyle($tabellinoPlayer.torneo.torneoRow.tipoTorneo)">#if($tabellinoPlayer.posizioneRaggiunta)
@@ -212,14 +212,14 @@
 
 
 <!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../vendor/bootstrap/js/popper.js"></script>
+	<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
+	<script src="../vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
 		$('.js-pscroll').each(function(){
 			var ps = new PerfectScrollbar(this);
@@ -232,7 +232,7 @@
 		
 	</script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<script src="../js/main.js"></script>
 
 </body>
 </html>

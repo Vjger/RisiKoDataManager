@@ -49,7 +49,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 
 public class HtmlPublisher {
 	
-	public static final String FOLDER_PATH = ResourceWorking.htmlPagesPath();
+	public static final String ROOT_PATH = ResourceWorking.htmlPagesPath();
 	public static final DateFormat lastUpdateTimeFormat = new SimpleDateFormat("dd/MM/yyyyHHmmss");
 
 	public static class FilesToPublish{
@@ -189,7 +189,7 @@ public class HtmlPublisher {
 			}
 		}
 		
-		File doppioniSospetti = new File(FOLDER_PATH, SitePages.DOPPIONI);
+		File doppioniSospetti = new File(ROOT_PATH, SitePages.DOPPIONI);
 		List<ScorePlayer> allTabellini = new ArrayList<ScorePlayer>();
 		for (FilesToPublish fileToPublish: fileDaPubblicare){
 			
@@ -238,7 +238,7 @@ public class HtmlPublisher {
 				return result;
 			}
 		});
-		File listaTornei = new File(FOLDER_PATH, "listaTornei"+year+".html");
+		File listaTornei = new File(ResourceWorking.listTournamentsPath(), "listaTornei"+year+".html");
 		listaTorneiPublisher(torneiPubblicati, listaTornei, year);
 		
 		MyLogger.getLogger().info("Inizio elaborazione tabellini");
@@ -248,12 +248,12 @@ public class HtmlPublisher {
 		
 		assegnaNominativiAPartita(torneiPubblicati, year);
 		
-		File ranking = new File(FOLDER_PATH,"ranking"+year+".html");
+		File ranking = new File(ResourceWorking.listRankingsPath(),"ranking"+year+".html");
 		rankingPublisher(tabellini, ranking, year, rankingData);
-		File folderTornei = new File(FOLDER_PATH+File.separator+"TORNEI");
+		File folderTornei = new File(ROOT_PATH+File.separator+"TORNEI");
 		List<File> torneiHtml = torneiPublisher(year, tournamentsToPublishByYear.getTorneiDaMettereOnline(), folderTornei);
 		
-		File folderTabelliniClub = new File(FOLDER_PATH+File.separator+"TABELLINI_CLUB");
+		File folderTabelliniClub = new File(ROOT_PATH+File.separator+"TABELLINI_CLUB");
 		//ClubAnalysis clubAnalysis = TournamentsAnalyzer.elaboraPartecipazioniTornei(year, torneiPubblicati, tournamentsToPublishByYear.getTorneiDaMettereOnline());
 		ClubAnalysis clubAnalysis = TournamentsAnalyzer.elaboraPartecipazioniTornei(year, torneiPubblicati, tournamentsToPublishByYear.getTorneiDaMettereOnline(), tabellini);
 		List<File> tabelliniClub = tabelliniClubPublisher(clubAnalysis, year, folderTabelliniClub);

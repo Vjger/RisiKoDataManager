@@ -5,21 +5,21 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/loghi/cup-160117_960_720.png"/>
+	<link rel="icon" type="image/png" href="../images/loghi/cup-160117_960_720.png"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/buttons.css">	
+	<link rel="stylesheet" type="text/css" href="../css/util.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/buttons.css">	
 <!--===============================================================================================-->
 </head>
 <body>
@@ -54,7 +54,7 @@
 			<div class="wrap-table100" style="width: 1200px">
 				<div class="table100 ver1 m-b-110" style="width: 1200px; padding-top: 5px;">
 						<div>
-							<a href="index.html"><img src="images/icons/home.png"></a>
+							<a href="index.html"><img src="../images/icons/home.png"></a>
 							<!--
 							#foreach( $year in $years )
 								#set ($urlListaTornei = "listaTornei"+$year+".html")
@@ -69,7 +69,7 @@
 							</select> 
 							<span style="float: right; font-size: 12px;">Ultimo aggiornamento: $data</span>							
 						</div>
-						<div style="text-align: center;"><img src="images/loghi/tornei_360x171.png"><div class="yearButton">$year</div></div>
+						<div style="text-align: center;"><img src="../images/loghi/tornei_360x171.png"><div class="yearButton">$year</div></div>
 						<table>
 							<thead>
 								<tr class="head">
@@ -77,7 +77,7 @@
 										<select id="selectClub" onChange="visualizzaSoloClub()">
 												<option value="All">TUTTI</option>
 											#foreach( $club in $clubs )
-												<option value="$htmlPublisher.getTorneoPage($club)" style="background-image:url(images/icons/plus.png)">$club</option>
+												<option value="$htmlPublisher.getTorneoPage($club)" style="background-image:url(../images/icons/plus.png)">$club</option>
 											#end
 										</select> 
 									</th>
@@ -89,7 +89,7 @@
 									<th class="column10">Turni previsti</th>
 									<th class="column10">Tavoli</th>	
 									<th class="column10">Concluso</th>								
-									<th class="column10"><img src="images/icons/note.png" title="note" alt="note"></th>	
+									<th class="column10"><img src="../images/icons/note.png" title="note" alt="note"></th>	
 								</tr>
 							</thead>
 							<tbody>
@@ -98,8 +98,8 @@
 								#set ($urlTorneo = $htmlPublisher.getTorneoPage($torneo.torneoRow.idTorneo)+".html" )
 								#set ($urlTabellinoClub = "Tabellino"+$htmlPublisher.getTorneoPage($torneo.torneoRow.organizzatore)+"_"+$year+".html" )
 								<tr class="body" name="club_$htmlPublisher.getTorneoPage($torneo.torneoRow.organizzatore)">
-									<td class="column10" style="$stileCella"><a style="color: inherit; cursor: pointer;"  href="TABELLINI_CLUB/$urlTabellinoClub" target="_blank"><img src="images/loghi/rcu/${torneo.torneoRow.organizzatore} (Custom).png" title="$torneo.torneoRow.organizzatore" alt="$torneo.torneoRow.organizzatore"></a></td>
-									<td class="column10" style="$stileCella"><a style="color: inherit; cursor: pointer;"  href="TORNEI/$urlTorneo" target="_blank">$torneo.torneoRow.nomeTorneo</a></td>
+									<td class="column10" style="$stileCella"><a style="color: inherit; cursor: pointer;"  href="../TABELLINI_CLUB/$urlTabellinoClub" target="_blank"><img src="../images/loghi/rcu/${torneo.torneoRow.organizzatore} (Custom).png" title="$torneo.torneoRow.organizzatore" alt="$torneo.torneoRow.organizzatore"></a></td>
+									<td class="column10" style="$stileCella"><a style="color: inherit; cursor: pointer;"  href="../TORNEI/$urlTorneo" target="_blank">$torneo.torneoRow.nomeTorneo</a></td>
 									<td class="column10" style="$stileCella">$torneo.torneoRow.sede</td>
 									<td class="column10" style="$stileCella">$torneo.torneoRow.startDate</td>
 									<td class="column10" style="$stileCella">$torneo.torneoRow.endDate</td>
@@ -108,14 +108,14 @@
 									<td class="column10" style="$stileCella">$torneo.torneoRow.numeroTavoli</td>
 									<td class="column10" style="$stileCella">
 										#if($torneo.concluso)
-											<img src="images/icons/concluso.png" title="concluso" alt="concluso">
+											<img src="../images/icons/concluso.png" title="concluso" alt="concluso">
 										#else
-											<img src="images/icons/nonConcluso.png" title="non concluso" alt="non concluso">
+											<img src="../images/icons/nonConcluso.png" title="non concluso" alt="non concluso">
 										#end
 									</td>	
 									<td class="column10" style="$stileCella">
 										#if($torneo.torneoRow.note)
-											<img src="images/icons/note.png" title="$torneo.torneoRow.note" alt="note">
+											<img src="../images/icons/note.png" title="$torneo.torneoRow.note" alt="note">
 										#end 
 									</td>	
 								</tr>
@@ -129,14 +129,14 @@
 
 
 <!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../vendor/bootstrap/js/popper.js"></script>
+	<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
+	<script src="../vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
 		$('.js-pscroll').each(function(){
 			var ps = new PerfectScrollbar(this);
@@ -149,7 +149,7 @@
 		
 	</script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<script src="../js/main.js"></script>
 
 </body>
 </html>
