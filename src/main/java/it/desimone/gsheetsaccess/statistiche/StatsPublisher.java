@@ -7,8 +7,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -59,10 +61,10 @@ public class StatsPublisher {
 		
 		for (Integer year: years) {
 			File statisticheClub = new File(FOLDER_PATH, "statisticheClub"+year+".html");
-			statistichePublisher(reportTournaments, statisticheClub, "StatisticheClub4.vm", year.toString());
+			statistichePublisher(reportTournaments, statisticheClub, "StatisticheClub4_Tab.vm", year.toString());
 
 			File statistichePlayer = new File(FOLDER_PATH, "statisticheGiocatori"+year+".html");
-			statistichePublisher(reportTournaments, statistichePlayer, "StatisticheGiocatori.vm", year.toString());
+			statistichePublisher(reportTournaments, statistichePlayer, "StatisticheGiocatori_Tab.vm", year.toString());
 			
 			if (withUpload){
 				try{
@@ -75,7 +77,10 @@ public class StatsPublisher {
 		}
 		
 		File statisticheAnnuali = new File(FOLDER_PATH, "statisticheAnnuali.html");
-		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2.vm", null);
+		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2_Tab.vm", null);
+		
+		File statisticheTab = new File(FOLDER_PATH, "statisticheTab.html");
+		statistichePublisher(reportTournaments, statisticheTab, "StatisticheTab.vm", String.valueOf(GregorianCalendar.getInstance().get(Calendar.YEAR)));
 		
 		if (withUpload){
 			try{

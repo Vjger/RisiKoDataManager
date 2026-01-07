@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Statistiche Annuali</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* TAB */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 5px;
+}
+
+.tab {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.tab.active {
+  border-bottom: 3px solid #007bff;
+  font-weight: bold;
+}
+
+/* CONTENUTO */
+#content {
+  width: 100%;
+}
+
+iframe {
+  width: 100%;
+  height: 900px;
+  border: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER COMUNE -->
+<div class="header">
+  <a href="index.html">
+    <img src="images/icons/home.png">
+  </a>
+
+  <select id="selectYear">
+    #foreach( $anno in $years )
+      <option value="$anno" #if ($anno == $year)selected#end>$anno</option>
+    #end
+  </select>
+
+  <span style="margin-left:auto; font-size:12px;">
+    Ultimo aggiornamento: $data
+  </span>
+</div>
+
+<!-- TAB -->
+<div class="tabs">
+  <div class="tab active" data-tab="statisticheClub">Statistiche Club</div>
+  <div class="tab" data-tab="statisticheAnnuali">Statistiche Annuali</div>
+  <div class="tab" data-tab="statisticheGiocatori">Statistiche Giocatori</div>
+</div>
+
+<!-- CONTENUTO -->
+<div id="content">
+  <iframe id="tabFrame"></iframe>
+</div>
+
+<script>
+const tabs = document.querySelectorAll(".tab");
+const frame = document.getElementById("tabFrame");
+const yearSelect = document.getElementById("selectYear");
+
+let activeTab = "overview";
+
+function getTabUrl(tab) {
+  const year = yearSelect.value;
+
+  switch (tab) {
+    case "statisticheAnnuali":
+      return "statisticheAnnuali.html";
+
+    case "statisticheClub":
+      return "statisticheClub" + year + ".html";
+
+    case "statisticheGiocatori":
+        return "statisticheGiocatori" + year + ".html";
+  }
+}
+
+function loadTab(tab) {
+  activeTab = tab;
+
+  tabs.forEach(t =>
+    t.classList.toggle("active", t.dataset.tab === tab)
+  );
+
+  frame.src = getTabUrl(tab);
+}
+
+// click sui tab
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    loadTab(tab.dataset.tab);
+  });
+});
+
+// cambio anno → ricarica SOLO il tab attivo
+yearSelect.addEventListener("change", () => {
+  loadTab(activeTab);
+});
+
+// caricamento iniziale
+loadTab(activeTab);
+</script>
+
+</body>
+</html>

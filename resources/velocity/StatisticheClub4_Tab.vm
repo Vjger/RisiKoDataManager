@@ -96,36 +96,10 @@
 
 <body>
 
-<script>
-function changeYear() {
-  var myselect = document.getElementById("selectYear");
-  document.location.href = myselect.value;
-}
-</script>
-
 <div class="limiter">
   <div class="container-table100">
     <div class="wrap-table100" style="width:1400px">
       <div class="table100 ver1 m-b-110" style="width:1400px; padding-top:5px;">
-
-        <!-- HEADER PAGINA -->
-        <div>
-          <a href="index.html"><img src="images/icons/home.png"></a>
-
-          <select id="selectYear" onchange="changeYear()">
-            #foreach($anno in $years)
-              #set($urlStatisticheClub = "statisticheClub"+$anno+".html")
-              <option value="$urlStatisticheClub" #if($anno == $year)selected#end>
-                $anno
-              </option>
-            #end
-          </select>
-
-          <span style="float:right;font-size:12px">
-            Ultimo aggiornamento: $data
-          </span>
-        </div>
-
         <div style="text-align:center">
           <img src="images/loghi/tornei_360x171.png">
           <div class="yearButton">$year</div>
