@@ -134,6 +134,9 @@
 			               		<mkdir dir="${project.output}/working/htmlpages" />
 			               		<mkdir dir="${project.output}/working/htmlpages/TORNEI" />
 			               		<mkdir dir="${project.output}/working/htmlpages/TABELLINI_CLUB" />
+			               		<mkdir dir="${project.output}/working/htmlpages/LISTA_TORNEI" />
+			               		<mkdir dir="${project.output}/working/htmlpages/RANKING" />
+			               		<mkdir dir="${project.output}/working/htmlpages/STATISTICHE" />			               		
 			               		<mkdir dir="${project.output}/working/htmlpublisher" />
 			                </target>
 			            </configuration>
@@ -224,7 +227,7 @@
 	 <dependency>
 	 	<groupId>it.desimone</groupId>
 	 	<artifactId>FtpUtility</artifactId>
-	 	<version>1.0.1</version>
+	 	<version>1.1.0</version>
 	 </dependency>
   </dependencies>  
 </project>

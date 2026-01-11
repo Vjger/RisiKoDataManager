@@ -26,9 +26,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.xmlbeans.impl.common.Levenshtein;
@@ -36,6 +38,8 @@ import org.apache.xmlbeans.impl.common.Levenshtein;
 public class TorneiUtils {
 
 	private static final Integer LEVENSHTEIN_LIMIT = 4;
+	
+	private static Map<String, List<TorneoPubblicato>> torneiPubblicati = new HashMap<String, List<TorneoPubblicato>>();
 	
 	static class FalsiPositivi{
 		private Integer primo;
@@ -100,6 +104,23 @@ public class TorneiUtils {
 		return result;
 	}
 	
+	public static void resetCacheTornei() {
+		torneiPubblicati.clear();
+	}
+	
+	public static List<TorneoPubblicato> getTorneiPubblicati(String year){
+		MyLogger.getLogger().info("START: Recupero Tornei per anno "+year);
+		List<TorneoPubblicato> tornei = torneiPubblicati.get(year);
+		if (tornei != null) {
+			MyLogger.getLogger().info("Tornei recuperati dalla cache");
+		}else {
+			tornei = caricamentoTornei(year);
+		}
+		MyLogger.getLogger().info("END");
+		return tornei;
+	}
+	
+	
 	public static List<TorneoPubblicato> caricamentoTornei(String year){
 		MyLogger.getLogger().info("START");
 		
@@ -145,6 +166,7 @@ public class TorneiUtils {
 				}
 			}
 		}
+		torneiPubblicati.put(year, result);
 
 		MyLogger.getLogger().info("END");
 		
@@ -668,7 +690,7 @@ public class TorneiUtils {
 		List<Integer> years = Configurator.getTorneiYears();
 		
 		for (Integer year: years){
-			List<TorneoPubblicato> torneiPubblicati = TorneiUtils.caricamentoTornei(year.toString());
+			List<TorneoPubblicato> torneiPubblicati = TorneiUtils.getTorneiPubblicati(year.toString());
 			List<ScorePlayer> tabelliniAnnuali = RankingCalculator.elaboraTabellini(year.toString(), torneiPubblicati, null, BlackListData.getInstance());
 			for (ScorePlayer scorePlayer: tabelliniAnnuali){
 				if (allTabellini.contains(scorePlayer)){

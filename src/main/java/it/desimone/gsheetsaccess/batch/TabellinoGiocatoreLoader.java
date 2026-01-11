@@ -66,7 +66,7 @@ public class TabellinoGiocatoreLoader {
 				}
 			});
 			
-			File tabelliniFile = new File(HtmlPublisher.FOLDER_PATH,"tabellini.html");
+			File tabelliniFile = new File(HtmlPublisher.ROOT_PATH,"tabellini.html");
 			
 		    Properties p = new Properties();
 		    p.setProperty("resource.loader.file.path", ResourceWorking.velocityTemplatePath());

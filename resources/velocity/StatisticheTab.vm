@@ -44,27 +44,92 @@ iframe {
   height: 900px;
   border: none;
 }
+.header-bar {
+  display: flex;
+  align-items: center;
+}
+
+.left,
+.center,
+.right {
+  flex: 1;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+  font-size: 12px;
+}
+
 </style>
+
+<script>
+function initYearSelect(selectId, startYear) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const month = now.getMonth(); // 0 = gennaio
+
+  // Regola di selezione
+  const yearToSelect = (month === 0)
+    ? currentYear - 1
+    : currentYear;
+
+  // Pulizia eventuali option già presenti
+  select.innerHTML = "";
+
+  // Popolamento combo
+  for (let year = startYear; year <= currentYear; year++) {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+
+    if (year === yearToSelect) {
+      option.selected = true;
+    }
+
+    select.appendChild(option);
+  }
+}
+
+// Inizializzazione
+document.addEventListener("DOMContentLoaded", function () {
+  initYearSelect("selectYear", 2019);
+});
+</script>
+
 </head>
 
 <body>
 
 <!-- HEADER COMUNE -->
-<div class="header">
+<div class="header-bar">
+  <div class="left">
   <a href="index.html">
     <img src="images/icons/home.png">
   </a>
+  <select id="selectYear"></select>
+  </div>
 
-  <select id="selectYear">
-    #foreach( $anno in $years )
-      <option value="$anno" #if ($anno == $year)selected#end>$anno</option>
-    #end
-  </select>
+  <div class="center">
+    <img src="images/loghi/statistiche_239x86.png" alt="logo">
+  </div>
 
-  <span style="margin-left:auto; font-size:12px;">
-    Ultimo aggiornamento: $data
-  </span>
+  <div class="right">
+    <span id="lastUpdate">Ultimo aggiornamento: $data</span>
+  </div>
 </div>
+
 
 <!-- TAB -->
 <div class="tabs">
@@ -79,52 +144,57 @@ iframe {
 </div>
 
 <script>
-const tabs = document.querySelectorAll(".tab");
-const frame = document.getElementById("tabFrame");
-const yearSelect = document.getElementById("selectYear");
+document.addEventListener("DOMContentLoaded", function () {
 
-let activeTab = "overview";
+  const tabs = document.querySelectorAll(".tab");
+  const frame = document.getElementById("tabFrame");
+  const yearSelect = document.getElementById("selectYear");
 
-function getTabUrl(tab) {
-  const year = yearSelect.value;
+  // primo tab come default
+  let activeTab = tabs[0].dataset.tab;
 
-  switch (tab) {
-    case "statisticheAnnuali":
-      return "./STATISTICHE/statisticheAnnuali.html";
+  function getTabUrl(tab) {
+    const year = yearSelect.value;
 
-    case "statisticheClub":
-      return "./STATISTICHE/statisticheClub" + year + ".html";
+    switch (tab) {
+      case "statisticheAnnuali":
+        return "./STATISTICHE/statisticheAnnuali.html";
 
-    case "statisticheGiocatori":
+      case "statisticheClub":
+        return "./STATISTICHE/statisticheClub" + year + ".html";
+
+      case "statisticheGiocatori":
         return "./STATISTICHE/statisticheGiocatori" + year + ".html";
+    }
   }
-}
 
-function loadTab(tab) {
-  activeTab = tab;
+  function loadTab(tab) {
+    activeTab = tab;
 
-  tabs.forEach(t =>
-    t.classList.toggle("active", t.dataset.tab === tab)
-  );
+    tabs.forEach(t =>
+      t.classList.toggle("active", t.dataset.tab === tab)
+    );
 
-  frame.src = getTabUrl(tab);
-}
+    frame.src = getTabUrl(tab);
+  }
 
-// click sui tab
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    loadTab(tab.dataset.tab);
+  // click sui tab
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      loadTab(tab.dataset.tab);
+    });
   });
-});
 
-// cambio anno → ricarica SOLO il tab attivo
-yearSelect.addEventListener("change", () => {
+  // cambio anno → ricarica il tab attivo
+  yearSelect.addEventListener("change", () => {
+    loadTab(activeTab);
+  });
+
+  // ✅ caricamento iniziale corretto
   loadTab(activeTab);
 });
-
-// caricamento iniziale
-loadTab(activeTab);
 </script>
+
 
 </body>
 </html>

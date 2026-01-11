@@ -87,7 +87,7 @@ public class GSheetsReaderTest {
 	}
 	
 	private static void testInsertOrUpdateGiocatore2() throws IOException{
-		String spreadSheetIdAnagraficaRidotta 	= Configurator.getAnagraficaRidottaSheetId("2018");
+		String spreadSheetIdAnagraficaRidotta 	= Configurator.getAnagraficaRidottaSheetId();
 		String spreadSheetIdTornei 				= Configurator.getTorneiSheetId("2018");
 		String sheetNameAnagraficaRidotta 		= AnagraficaGiocatoreRidottaRow.SHEET_ANAGRAFICA_NAME;
 		String sheetNameGiocatori 				= AnagraficaGiocatoreRow.SHEET_GIOCATORI_NAME;

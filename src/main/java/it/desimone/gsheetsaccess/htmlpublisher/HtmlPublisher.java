@@ -16,6 +16,7 @@ import it.desimone.gsheetsaccess.gsheets.dto.PartitaRow;
 import it.desimone.gsheetsaccess.gsheets.facade.ExcelGSheetsBridge;
 import it.desimone.gsheetsaccess.ranking.RankingCalculator;
 import it.desimone.gsheetsaccess.ranking.RankingData;
+import it.desimone.gsheetsaccess.statistiche.StatsPublisher;
 import it.desimone.gsheetsaccess.utils.TorneiUtils;
 import it.desimone.risiko.torneo.dto.SchedaTorneo.TipoTorneo;
 import it.desimone.utils.Capitalize;
@@ -164,6 +165,7 @@ public class HtmlPublisher {
 	public static void publish(boolean withUpload) {
 		MyLogger.getLogger().info("INIZIO elaborazione");
 		
+		TorneiUtils.resetCacheTornei();
 		Map<Integer, TournamentsToPublish> newToPublish = publishingAnalyzer();
 		Set<Integer> years = newToPublish.keySet();
 		
@@ -213,6 +215,8 @@ public class HtmlPublisher {
 				MyLogger.getLogger().severe("Errore nel ftp dei file: "+ioe.getMessage());
 			}
 		}
+		
+		StatsPublisher.publish(withUpload);
 		MyLogger.getLogger().info("Fine elaborazione");
 	}
 	
@@ -280,7 +284,7 @@ public class HtmlPublisher {
 		LastUpdateData lastUpdateData = new LastUpdateData(); 
 		for (Integer year: years){
 			MyLogger.getLogger().info("Inizio estrazione tornei pubblicati per l'anno "+year);
-			List<TorneoPubblicato> torneiPubblicati = TorneiUtils.caricamentoTornei(year.toString());
+			List<TorneoPubblicato> torneiPubblicati = TorneiUtils.getTorneiPubblicati(year.toString());
 			
 //			String lastDateString = ResourceWorking.getLastTournamentDate(year.toString());
 //			Date lastDateOLD = null;
@@ -673,18 +677,12 @@ public class HtmlPublisher {
 		}
 	}
 	
-	private static void uploadFiles(File ranking, File listaTornei, File doppioniSospetti, List<File> torneiHtml) throws IOException{
-		AlterVistaUtil.uploadInTornei(torneiHtml);
-		AlterVistaUtil.uploadInRoot(Collections.singletonList(listaTornei));
-		AlterVistaUtil.uploadInRoot(Collections.singletonList(doppioniSospetti));
-		AlterVistaUtil.uploadInRoot(Collections.singletonList(ranking));
-	}
-	
+
 	private static void uploadFiles(File ranking, File listaTornei, List<File> torneiHtml,  List<File> tabelliniPerClub) throws IOException{
 		AlterVistaUtil.uploadInTornei(torneiHtml);
 		AlterVistaUtil.uploadInTabelliniPerClub(tabelliniPerClub);
-		AlterVistaUtil.uploadInRoot(Collections.singletonList(listaTornei));
-		AlterVistaUtil.uploadInRoot(Collections.singletonList(ranking));
+		AlterVistaUtil.uploadInListaTornei(Collections.singletonList(listaTornei));
+		AlterVistaUtil.uploadInRankings(Collections.singletonList(ranking));
 	}
 	
 	public static String getTorneoPage(String idTorneo){

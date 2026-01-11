@@ -100,11 +100,12 @@
   <div class="container-table100">
     <div class="wrap-table100" style="width:1400px">
       <div class="table100 ver1 m-b-110" style="width:1400px; padding-top:5px;">
+      <!--
         <div style="text-align:center">
           <img src="../images/loghi/tornei_360x171.png">
           <div class="yearButton">$year</div>
         </div>
-
+	-->
         <!-- ================= TABELLA ================= -->
         <div class="table-scroll-y">
 
