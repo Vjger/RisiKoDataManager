@@ -55,7 +55,7 @@
 					<div style="text-align: center;"><img src="../images/loghi/tornei_360x171.png"><div class="yearButton">$year</div></div>
 					-->
 							#set ($mediana = $reportTournaments.medianFromHistogram($reportTournaments.getHistogramPlayerByYear($year)))
-							#set ($giocatori = $reportTournaments.getNumberOfPlayersByYear($year))
+							#set ($giocatori = $reportTournaments.getNumberOfPlayersByEventsOfTheYear($year))
 							#set ($eventi = $reportTournaments.getNumberOfEventsByYear($year))
 						  <h5 style="text-align: center;">Distribuzione partecipazione giocatori per N° Eventi. Giocatori: $giocatori - Eventi: $eventi - Mediana: $mediana</h5>
 						<div class="chart-container">

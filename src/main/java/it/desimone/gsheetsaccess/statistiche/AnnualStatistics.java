@@ -41,6 +41,9 @@ public class AnnualStatistics {
 	public int getNumberOfPlayers() {
 		return this.annualPlayers.size();
 	}
+	public int getNumberOfPlayersOfAnnualTournaments() {
+		return this.annualPlayerAndTournaments.size();
+	}
 	public Set<Integer> getAnnualPlayers(){
 		return annualPlayers;
 	}

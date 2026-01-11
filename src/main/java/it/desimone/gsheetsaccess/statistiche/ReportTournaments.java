@@ -160,6 +160,10 @@ public class ReportTournaments {
 		return getAnnualStatistics(year).getNumberOfPlayers();
 	}
 	
+	public int getNumberOfPlayersByEventsOfTheYear(Integer year) {
+		return getAnnualStatistics(year).getNumberOfPlayersOfAnnualTournaments();
+	}
+	
 	public Map<Integer, Long> getHistogramPlayerByYear(Integer year) {
 		AnnualStatistics annualStatistics = getAnnualStatistics(year);
 		Map<Integer, Long> histogram =

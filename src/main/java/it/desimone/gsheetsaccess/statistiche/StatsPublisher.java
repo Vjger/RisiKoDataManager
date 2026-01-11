@@ -25,8 +25,6 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
-import com.itextpdf.text.log.SysoLogger;
-
 import it.desimone.ftputils.AlterVistaUtil;
 import it.desimone.gsheetsaccess.common.Configurator;
 import it.desimone.gsheetsaccess.common.ResourceWorking;
@@ -53,7 +51,6 @@ public class StatsPublisher {
 		Configurator.loadConfiguration(Configurator.Environment.PRODUCTION);
 		
 		List<Integer> years = Configurator.getTorneiYears();
-		years = Collections.singletonList(2026);
 		for (Integer year: years) {
 			List<TorneoPubblicato> torneiPubblicati = TorneiUtils.getTorneiPubblicati(year.toString());
 			Stream<TorneoPubblicato> streamTorneiPubblicati = torneiPubblicati.stream();
@@ -66,13 +63,6 @@ public class StatsPublisher {
 
 			File statistichePlayer = new File(STATS_PATH, "statisticheGiocatori"+year+".html");
 			statistichePublisher(reportTournaments, statistichePlayer, "StatisticheGiocatori_Tab.vm", year.toString());
-			
-			Set<Integer> partecipanti1 = reportTournaments.getAnnualStatistics(year).getAnnualPlayers();
-			Set<Integer> partecipanti2 = reportTournaments.getAnnualStatistics(year).getAnnualPlayersAndTournaments().keySet();
-			
-			partecipanti2.removeAll(partecipanti1);
-			
-			System.out.println(partecipanti2);
 			
 			if (withUpload){
 				try{
@@ -127,7 +117,6 @@ public class StatsPublisher {
 	}
 	
 	private static void getStatisticsByYear(TorneoPubblicato torneoPubblicato) {
-		System.out.println("Torneo pubblicato: ["+torneoPubblicato.getIdTorneo()+"] - Partecipanti: ["+torneoPubblicato.getIdPartecipanti()+"]");
 		Object[] obj = getAnnualStatisticsByYearTournament(torneoPubblicato);
 		if (!ArrayUtils.isEmpty(obj)) {
 			Integer yearOfTournament = (Integer) obj[0];
@@ -137,7 +126,6 @@ public class StatsPublisher {
 			reportTournaments.putAnnualStatistics(yearOfTournament, annualStatisticsByYearTournament);
 		}
 		torneoPubblicato.getPartite().stream().forEach(partita -> manageAnnualStatistics(torneoPubblicato, partita));
-		System.out.println("Torneo pubblicato: ["+torneoPubblicato.getIdTorneo()+"] - Partecipanti: ["+reportTournaments.getAnnualStatistics((Integer)obj[0]).getAnnualPlayers()+"]");
 	}
 
 	private static Object[] getAnnualStatisticsByYearTournament(TorneoPubblicato torneoPubblicato) {
@@ -225,8 +213,7 @@ public class StatsPublisher {
 		}
 
 		context.put( "year", year );
-		//context.put( "years", Configurator.getTorneiYears() );
-		context.put( "years", Collections.singletonList(2026) );
+		context.put( "years", Configurator.getTorneiYears() );
 		context.put( "reportTournaments", reportTournaments );
 		context.put( "styleGenerator", StyleGenerator.class);
 		context.put( "data", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
