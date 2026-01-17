@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- TAB -->
 <div class="tabs">
   <div class="tab active" data-tab="statisticheClub">Statistiche Club</div>
-  <div class="tab" data-tab="statisticheAnnuali">Statistiche Pluriennali</div>
+  <div class="tab" data-tab="statistichePluriennali">Statistiche Pluriennali</div>
   <div class="tab" data-tab="statisticheGiocatori">Statistiche Giocatori</div>
 </div>
 
