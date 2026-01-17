@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
@@ -74,7 +73,7 @@ public class StatsPublisher {
 			}
 		}
 		
-		File statisticheAnnuali = new File(STATS_PATH, "statisticheAnnuali.html");
+		File statisticheAnnuali = new File(STATS_PATH, "statistichePluriennali.html");
 		statistichePublisher(reportTournaments, statisticheAnnuali, "StatisticheAnnuali2_Tab.vm", null);
 		
 		File statisticheTab = new File(ResourceWorking.htmlPagesPath(), "statisticheTab.html");

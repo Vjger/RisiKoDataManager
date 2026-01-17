@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- TAB -->
 <div class="tabs">
   <div class="tab active" data-tab="statisticheClub">Statistiche Club</div>
-  <div class="tab" data-tab="statisticheAnnuali">Statistiche Annuali</div>
+  <div class="tab" data-tab="statisticheAnnuali">Statistiche Pluriennali</div>
   <div class="tab" data-tab="statisticheGiocatori">Statistiche Giocatori</div>
 </div>
 
@@ -157,8 +157,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const year = yearSelect.value;
 
     switch (tab) {
-      case "statisticheAnnuali":
-        return "./STATISTICHE/statisticheAnnuali.html";
+      case "statistichePluriennali":
+        return "./STATISTICHE/statistichePluriennali.html";
 
       case "statisticheClub":
         return "./STATISTICHE/statisticheClub" + year + ".html";
